@@ -28,9 +28,6 @@ jobs:
       - name: Build de produção
         run: npm run build
 
-      - name: Build do catálogo de componentes
-        run: npm run build-storybook
-
       - name: Instalar Chromium do Playwright
         run: npx playwright install --with-deps chromium
 

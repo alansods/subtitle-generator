@@ -15,8 +15,8 @@ export default defineConfig({
       autoCodeSplitting: true,
       routesDirectory: './src/routes',
       generatedRouteTree: './src/routeTree.gen.ts',
-      // Testes e stories ao lado das rotas não são rotas.
-      routeFileIgnorePattern: '\\.(test|stories)\\.tsx?$',
+      // Testes ao lado das rotas não são rotas.
+      routeFileIgnorePattern: '\\.test\\.tsx?$',
     }),
     react(),
     tailwindcss(),

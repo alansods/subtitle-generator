@@ -18,8 +18,6 @@ Aplicação web gratuita que gera legendas para vídeos direto no navegador: o u
 | `npm test`                        | Testes unitários e de componentes (Vitest + Testing Library)                    |
 | `npm run test:tooling`            | Testes da infraestrutura (tsc, eslint, prettier, build, CI)                     |
 | `npm run test:e2e`                | Testes end-to-end (Playwright) contra o dev server e o preview                  |
-| `npm run storybook`               | Catálogo de componentes em `http://localhost:6006`                              |
-| `npm run build-storybook`         | Build estático do catálogo                                                      |
 | `npm run lint` / `npm run format` | ESLint / Prettier                                                               |
 
 Na primeira vez, instale o navegador dos testes e2e com `npx playwright install chromium`.

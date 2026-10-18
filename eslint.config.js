@@ -4,14 +4,12 @@ import { defineConfig, globalIgnores } from 'eslint/config';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
-import storybook from 'eslint-plugin-storybook';
 import globals from 'globals';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig([
   globalIgnores([
     'dist',
-    'storybook-static',
     'playwright-report',
     'test-results',
     'coverage',
@@ -50,9 +48,8 @@ export default defineConfig([
     rules: { 'react-refresh/only-export-components': 'off' },
   },
   {
-    files: ['*.config.{ts,js}', 'config/**/*.ts', 'tests/**/*.ts', '.storybook/**/*.ts'],
+    files: ['*.config.{ts,js}', 'config/**/*.ts', 'tests/**/*.ts'],
     languageOptions: { globals: globals.node },
   },
-  storybook.configs['flat/recommended'],
   prettier,
 ]);

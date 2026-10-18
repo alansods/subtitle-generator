@@ -82,17 +82,6 @@ O projeto SHALL gerar um build estático de produção que inclui o arquivo de h
 - **THEN** ele termina com código de saída 0
 - **AND** a pasta de saída contém `index.html` e o arquivo `_headers`
 
-### Requirement: Catálogo de componentes
-O projeto SHALL ter um catálogo de componentes que compila como site estático, com suporte aos temas claro e escuro desde o início.
-
-#### Scenario: Catálogo compila
-- **WHEN** o comando de build do catálogo de componentes é executado
-- **THEN** ele termina com código de saída 0
-
-#### Scenario: Catálogo exibe os dois temas
-- **WHEN** o catálogo de componentes é compilado
-- **THEN** o layout raiz aparece como uma story no tema claro e outra no tema escuro
-
 ### Requirement: Integração contínua
 Todo push e pull request SHALL disparar uma pipeline que roda o comando agregado de qualidade, o build de produção e os testes end-to-end, falhando se qualquer um deles falhar.
 

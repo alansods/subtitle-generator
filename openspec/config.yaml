@@ -57,7 +57,7 @@ context: |
   - Web Audio API (AudioContext a 16 kHz) para áudio, fallback ffmpeg.wasm.
   - @ffmpeg/ffmpeg, @ffmpeg/core-mt, @ffmpeg/util em Web Worker para exportação de vídeo.
   - wavesurfer.js + plugin Regions para timeline.
-  - Testes: Vitest, React Testing Library, Playwright. Storybook para componentes.
+  - Testes: Vitest, React Testing Library, Playwright.
   - ESLint + Prettier; `tsc --noEmit` no CI.
   - Hospedagem estática no Cloudflare Pages (plano Free), com COOP same-origin e
     COEP credentialless (também no dev server do Vite). Sem backend.

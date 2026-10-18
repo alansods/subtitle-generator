@@ -18,9 +18,7 @@
     "test:watch": "vitest --project unit",
     "test:tooling": "vitest run --project tooling",
     "check": "npm run typecheck && npm run lint && npm run format:check && npm test",
-    "test:e2e": "playwright test",
-    "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.170.45",
@@ -38,8 +36,6 @@
   "devDependencies": {
     "@eslint/js": "^9.39.5",
     "@playwright/test": "^1.64.1",
-    "@storybook/addon-themes": "^10.6.2",
-    "@storybook/react-vite": "^10.6.2",
     "@tailwindcss/vite": "^4.3.3",
     "@tanstack/router-plugin": "^1.168.47",
     "@testing-library/dom": "^10.4.2",
@@ -55,13 +51,11 @@
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "eslint-plugin-react-hooks": "^7.1.1",
     "eslint-plugin-react-refresh": "^0.5.7",
-    "eslint-plugin-storybook": "^10.6.2",
     "globals": "^17.13.0",
     "jsdom": "^27.0.1",
     "prettier": "^3.9.10",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "shadcn": "^4.22.0",
-    "storybook": "^10.6.2",
     "tailwindcss": "^4.3.3",
     "typescript": "~6.0.3",
     "typescript-eslint": "^8.71.2",
