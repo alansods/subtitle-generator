@@ -1,0 +1,12 @@
+dist
+storybook-static
+playwright-report
+test-results
+coverage
+node_modules
+package-lock.json
+src/routeTree.gen.ts
+src/components/ui
+openspec
+.claude
+tests/tooling/fixtures

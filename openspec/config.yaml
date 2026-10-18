@@ -1,0 +1,118 @@
+schema: spec-driven
+
+context: |
+  Produto: "Gerador de Legenda" (UI em inglês: "Subtitle Generator"). App web gratuito,
+  100% no navegador e de uso único: o usuário escolhe um vídeo, a legenda é gerada
+  localmente com Whisper, ele revisa/edita sincronizado com o vídeo, baixa e pronto.
+  Exporta SRT/VTT, vídeo com legenda embutida (burn-in, fundo preto/branco/transparente)
+  ou vídeo com faixa de legenda (soft subtitle, mov_text). Sem conta, sem login, sem lista
+  de projetos e sem histórico. Uso interno de empresa sem nuvem própria; vídeos típicos
+  até ~100 MB. Custo zero: sem backend, sem API paga, sem banco de dados em servidor.
+
+  Fluxo e rotas (caminhos em inglês, sem ID):
+  - `/` início: página de apresentação com upload, benefícios e "Como fazer" em 4 passos.
+  - `/transcribe`: só "Idioma falado no vídeo" (Português / Inglês / Detectar; padrão =
+    idioma da UI), "Gerar legenda", progresso em etapas, cancelar, importar .srt/.vtt.
+  - `/edit`: player com overlay editável, lista de cues, timeline, estilo, validação.
+  - `/export`: somente legenda, burn-in ou soft subtitle, com progresso e cancelar.
+  - `/done`: confirma o download e oferece "Voltar a editar este vídeo" e "Fazer nova legenda".
+  - `*`: 404. Não existe tela de configurações: idioma e tema ficam no cabeçalho.
+  - Guardas: sem vídeo na sessão → `/`; sem cues → `/transcribe`; sem download → `/export`.
+  - Stepper Transcrever → Editar → Exportar nas telas de etapa.
+
+  Sessão (em memória, nunca persistida):
+  - Um vídeo por vez: arquivo, cues, estilo e histórico de undo vivem só na aba.
+  - Voltar ao início ou "Fazer nova legenda" descarta a sessão; pede confirmação se a
+    legenda não foi baixada ou foi editada depois do download.
+  - Fechar/recarregar a aba com legenda não baixada dispara o aviso nativo (beforeunload).
+  - Só ficam no navegador: preferências de idioma e tema (localStorage) e o cache dos
+    modelos e do ffmpeg (invisível ao usuário, para funcionar offline).
+
+  Transcrição sem escolhas técnicas:
+  - O modelo é escolhido automaticamente pelo dispositivo: sem WebGPU → whisper-base;
+    com WebGPU → whisper-small. Timestamps sempre por palavra.
+  - No editor, o link "Refazer com mais precisão" aparece só quando existe modelo maior
+    viável (sem WebGPU → small; WebGPU com ≥ 8 GB de memória → large-v3-turbo), uma vez
+    por sessão, com confirmação porque substitui as edições.
+  - A UI nunca mostra nome de modelo, tamanho de download ou cache.
+
+  Identidade visual (direção "Amigável", equilibrada):
+  - Fontes: Plus Jakarta Sans (UI), IBM Plex Mono (tempos), Inter (legenda, igual no burn-in).
+  - Fundos neutros (claro #F6F6F4 / escuro #121214), cartões brancos ou grafite, cantos
+    arredondados (18-32px), botões e seletores em pílula.
+  - Violeta só em ação principal e estado ativo (claro #5B3DF5 com texto branco; escuro
+    #9D8BFF com texto escuro). Seleções em neutro escuro. Telas de trabalho neutras.
+
+  Stack (obrigatória):
+  - TypeScript strict, Vite, React 18+.
+  - TanStack Router (rotas tipadas; search params validados com Zod). Caminhos de rota em
+    inglês e independentes do idioma da UI.
+  - Tailwind CSS + shadcn/ui; dark mode via classe `dark` no <html>.
+  - Zustand + zundo para a sessão em memória (undo/redo do editor, máx. 100 passos).
+  - Sem IndexedDB, OPFS ou Dexie: nada de vídeo, cue ou metadado é persistido.
+  - Zod para todos os schemas (importação de arquivos e leitura de preferências).
+  - i18next + react-i18next, idiomas pt-BR e en.
+  - @huggingface/transformers (Whisper, WebGPU com fallback WASM) em Web Worker.
+  - Comlink para comunicação com workers.
+  - Web Audio API (AudioContext a 16 kHz) para áudio, fallback ffmpeg.wasm.
+  - @ffmpeg/ffmpeg, @ffmpeg/core-mt, @ffmpeg/util em Web Worker para exportação de vídeo.
+  - wavesurfer.js + plugin Regions para timeline.
+  - Testes: Vitest, React Testing Library, Playwright. Storybook para componentes.
+  - ESLint + Prettier; `tsc --noEmit` no CI.
+  - Hospedagem estática no Cloudflare Pages (plano Free), com COOP same-origin e
+    COEP credentialless (também no dev server do Vite). Sem backend.
+  - Modelos Whisper vindos do Hugging Face e ffmpeg core de CDN público com versão fixa
+    (o .wasm passa do limite de 25 MiB por arquivo do Pages). As duas origens ficam em
+    constantes de configuração para permitir espelhar no Cloudflare R2.
+  - Parsers/geradores SRT, VTT e ASS escritos no projeto, sem biblioteca externa.
+
+  Princípios e restrições:
+  - Privacidade: o vídeo nunca sai da máquina. Nenhuma requisição envia mídia ou texto a servidores.
+  - Offline após o primeiro uso (modelo e ffmpeg ficam no cache do navegador).
+  - UI nunca trava: transcrição e exportação em workers separados, com progresso e cancelar.
+  - O que se vê é o que se exporta: uma única configuração de estilo gera o CSS do overlay e o
+    force_style do ASS; o burn-in deve ser visualmente equivalente ao preview.
+  - Simples e intuitivo: nenhuma decisão técnica é passada ao usuário; o app escolhe
+    defaults sozinho e, no máximo, oferece uma segunda chance em linguagem de resultado.
+  - Nada fica salvo, mas nada se perde sem aviso: confirmação antes de descartar e
+    aviso nativo ao fechar a aba com legenda não baixada.
+  - Acessibilidade: navegável por teclado, foco visível, contraste AA nos dois temas,
+    aria-live para progresso.
+  - Navegadores: Chrome e Edge atuais (WebGPU). Firefox e Safari em modo WASM, com aviso.
+  - Nenhum texto de UI fixo em componente: tudo vem de src/i18n/locales/{pt-BR,en}.json.
+
+  Ordem das mudanças (uma por vez: propor, aprovar, implementar, arquivar):
+  setup-project, add-app-shell, add-i18n, add-theming, add-preferences, add-session,
+  add-video-upload, add-subtitle-formats, add-transcription (com escolha automática e
+  "Refazer com mais precisão"), add-cue-segmentation, add-subtitle-editor-core,
+  add-subtitle-validation, add-editor-timeline, add-editor-shortcuts-and-history,
+  add-subtitle-style, add-subtitle-export, add-video-export, add-completion-screen,
+  deploy-cloudflare-pages.
+
+  Processo:
+  - Spec-Driven: nenhum código é escrito sem uma mudança OpenSpec aprovada por humano.
+  - Mudanças pequenas e focadas (uma capability ou comportamento por mudança).
+  - Bugs: verificar se a spec cobre o comportamento; mudança `fix-<descricao>` adiciona
+    cenário de regressão e corrige o código (ou corrige a spec antes, se ambígua).
+  - Todo cenário da spec tem ao menos um teste que cita o nome do cenário na descrição.
+  - Artefatos (proposal, design, tasks, specs) escritos em português do Brasil; palavras
+    normativas (SHALL/MUST, WHEN/THEN/AND) e cabeçalhos do OpenSpec em inglês.
+
+rules:
+  specs:
+    - Cada requisito usa "### Requirement:" com SHALL ou MUST e tem ao menos um "#### Scenario:" com WHEN/THEN (AND quando necessário).
+    - Capabilities válidas - app-shell, i18n, theming, session, video-upload, transcription, cue-segmentation, subtitle-editor, subtitle-validation, subtitle-style, preferences, subtitle-export, video-export, completion. Infraestrutura sem comportamento de usuário usa project-tooling. Não existem project-library nem persistence (removidas por decisão de produto).
+  tasks:
+    - Toda task que implementa um cenário inclui o teste correspondente citando o nome do cenário.
+    - Incluir ao final tasks de verificação - openspec validate --strict, tsc --noEmit, lint e testes passando, nenhum texto de UI sem tradução.
+  proposal:
+    - Declarar explicitamente o que está fora do escopo da mudança.
+
+operations:
+  apply:
+    guidance:
+      - Se a spec estiver errada ou incompleta durante a implementação, parar e atualizar os artefatos da mudança antes de continuar.
+  archive:
+    guidance:
+      - Só arquivar com openspec validate --strict, tsc --noEmit, lint e testes passando e /opsx:verify sem divergências.
+      - Após arquivar, confirmar que openspec/specs/ foi atualizado.
