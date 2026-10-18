@@ -4,6 +4,20 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gerador de Legenda</title>
+    <!-- Tema antes do primeiro render (sem flash). Mesma regra de src/theme/theme.ts. -->
+    <script id="theme-init">
+      (function () {
+        var mode = 'system';
+        try {
+          var saved = window.localStorage.getItem('gdl:theme');
+          if (saved === 'light' || saved === 'dark' || saved === 'system') mode = saved;
+        } catch (e) {}
+        var dark =
+          mode === 'dark' ||
+          (mode === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        document.documentElement.classList.toggle('dark', dark);
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
