@@ -9,12 +9,13 @@ describe('Requirement: Sessão única em memória', () => {
   it('Scenario: Sessão começa vazia', async () => {
     vi.resetModules();
     const { useSession: freshSession } = await import('./store');
-    const { video, cues, downloaded, transcription } = freshSession.getState();
-    expect({ video, cues, downloaded, transcription }).toEqual({
+    const { video, cues, downloaded, transcription, style } = freshSession.getState();
+    expect({ video, cues, downloaded, transcription, style }).toEqual({
       video: null,
       cues: [],
       downloaded: null,
       transcription: null,
+      style: { background: 'black', fontSize: 'md', position: 'bottom' },
     });
   });
 
@@ -54,6 +55,29 @@ describe('Requirement: Disponibilidade das etapas', () => {
       transcribe: true,
       edit: true,
       export: true,
+    });
+  });
+});
+
+describe('Requirement: Opções de estilo', () => {
+  it('Scenario: Estilo padrão', () => {
+    seedSession();
+    expect(useSession.getState().style).toEqual({
+      background: 'black',
+      fontSize: 'md',
+      position: 'bottom',
+    });
+  });
+
+  it('Scenario: Novo vídeo volta ao padrão', () => {
+    seedSession();
+    useSession.getState().setStyle({ background: 'white' });
+    expect(useSession.getState().style.background).toBe('white');
+    useSession.getState().setVideo(fakeVideo({ name: 'outro' }));
+    expect(useSession.getState().style).toEqual({
+      background: 'black',
+      fontSize: 'md',
+      position: 'bottom',
     });
   });
 });

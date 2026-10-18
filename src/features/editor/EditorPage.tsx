@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 import { buttonVariants } from '@/components/button-variants';
+import { StylePanel } from '@/features/style/StylePanel';
 import { useSession } from '@/lib/session/store';
 
 import { CueList } from './CueList';
@@ -23,8 +24,9 @@ export function EditorPage() {
         </Link>
       </div>
       <div className="flex flex-wrap items-start gap-5">
-        <div className="min-w-0 flex-[999_1_620px]">
+        <div className="flex min-w-0 flex-[999_1_620px] flex-col gap-3">
           <VideoPlayer video={video} />
+          <StylePanel />
         </div>
         <CueList />
       </div>

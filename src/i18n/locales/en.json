@@ -168,5 +168,25 @@
     "warnings_other": "{{count}} warnings",
     "filtering": "Showing only subtitles with issues.",
     "showAll": "Show all"
+  },
+  "style": {
+    "title": "Subtitle style",
+    "background": {
+      "label": "Background",
+      "black": "Black",
+      "white": "White",
+      "transparent": "Transparent"
+    },
+    "fontSize": {
+      "label": "Size",
+      "sm": "S",
+      "md": "M",
+      "lg": "L"
+    },
+    "position": {
+      "label": "Position",
+      "bottom": "Bottom",
+      "top": "Top"
+    }
   }
 }

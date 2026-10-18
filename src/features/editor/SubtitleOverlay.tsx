@@ -2,34 +2,10 @@ import { useState, type CSSProperties, type KeyboardEvent } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useSession } from '@/lib/session/store';
+import { styleToCss } from '@/lib/subtitles/style';
 
 import { activeCueAt, addCueAt } from './cueOps';
 import { playback, usePlayback } from './playback';
-
-// Estilo padrão da legenda (fundo preto, tamanho M, embaixo). Unidades `cqh` = % da
-// altura do vídeo, para escalar como o vídeo exportado. Configurável em add-subtitle-style.
-const WRAP: CSSProperties = {
-  position: 'absolute',
-  left: '4%',
-  right: '4%',
-  bottom: '6cqh',
-  display: 'flex',
-  justifyContent: 'center',
-  textAlign: 'center',
-  zIndex: 2,
-};
-const TEXT: CSSProperties = {
-  fontFamily: "Inter, 'Plus Jakarta Sans Variable', sans-serif",
-  fontWeight: 500,
-  fontSize: '5.5cqh',
-  lineHeight: 1.3,
-  whiteSpace: 'pre-line',
-  padding: '0.12em 0.45em',
-  background: '#000',
-  color: '#fff',
-  border: 0,
-  borderRadius: 2,
-};
 
 export function SubtitleOverlay() {
   const { t } = useTranslation();
@@ -39,6 +15,15 @@ export function SubtitleOverlay() {
   const active = usePlayback((s) => activeCueAt(cues, s.time));
   const playing = usePlayback((s) => s.playing);
   const [editing, setEditing] = useState<{ id: string; draft: string } | null>(null);
+  const style = useSession((s) => s.style);
+  const css = styleToCss(style);
+  const WRAP = css.wrap as CSSProperties;
+  const TEXT = css.text as CSSProperties;
+  // Em edição, o campo precisa ser legível mesmo com fundo transparente.
+  const EDIT: CSSProperties =
+    style.background === 'white'
+      ? { ...TEXT, background: '#fff', color: '#000' }
+      : { ...TEXT, background: '#000', color: '#fff', textShadow: 'none' };
 
   const startEditing = (id: string, text: string) => {
     playback.pause();
@@ -85,7 +70,7 @@ export function SubtitleOverlay() {
             onKeyDown={onKeyDown}
             onBlur={save}
             style={{
-              ...TEXT,
+              ...EDIT,
               width: 'min(92%, 900px)',
               textAlign: 'center',
               resize: 'none',

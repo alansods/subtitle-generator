@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 
+import { DEFAULT_STYLE, type SubtitleStyle } from '@/lib/subtitles/style';
 import type { Cue } from '@/lib/subtitles/types';
 
 // Sessão de trabalho: um vídeo por vez, só em memória. Nada daqui vai para
@@ -33,6 +34,7 @@ export interface SessionState {
   cues: Cue[];
   downloaded: SessionDownload | null;
   transcription: SessionTranscription | null;
+  style: SubtitleStyle;
 }
 
 export interface SessionActions {
@@ -41,10 +43,17 @@ export interface SessionActions {
   updateCue: (id: string, patch: Partial<Omit<Cue, 'id'>>) => void;
   markDownloaded: (download: SessionDownload) => void;
   setTranscription: (transcription: SessionTranscription) => void;
+  setStyle: (style: Partial<SubtitleStyle>) => void;
   reset: () => void;
 }
 
-const EMPTY: SessionState = { video: null, cues: [], downloaded: null, transcription: null };
+const EMPTY: SessionState = {
+  video: null,
+  cues: [],
+  downloaded: null,
+  transcription: null,
+  style: DEFAULT_STYLE,
+};
 
 function revoke(video: SessionVideo | null) {
   if (video) URL.revokeObjectURL(video.url);
@@ -71,6 +80,10 @@ export const useSession = create<SessionState & SessionActions>()((set, get) => 
   },
   setTranscription: (transcription) => {
     set({ transcription });
+  },
+  // Mudar o estilo também desatualiza um vídeo já exportado.
+  setStyle: (style) => {
+    set({ style: { ...get().style, ...style }, downloaded: null });
   },
   reset: () => {
     revoke(get().video);

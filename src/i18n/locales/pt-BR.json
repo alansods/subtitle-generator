@@ -168,5 +168,25 @@
     "warnings_other": "{{count}} avisos",
     "filtering": "Mostrando só legendas com problema.",
     "showAll": "Mostrar todas"
+  },
+  "style": {
+    "title": "Estilo da legenda",
+    "background": {
+      "label": "Fundo",
+      "black": "Preto",
+      "white": "Branco",
+      "transparent": "Transparente"
+    },
+    "fontSize": {
+      "label": "Tamanho",
+      "sm": "P",
+      "md": "M",
+      "lg": "G"
+    },
+    "position": {
+      "label": "Posição",
+      "bottom": "Inferior",
+      "top": "Superior"
+    }
   }
 }
