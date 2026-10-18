@@ -17,13 +17,25 @@
     "export": "Exportar"
   },
   "pages": {
-    "transcribe": { "title": "Gerar legenda" },
-    "edit": { "title": "Editar legenda" },
-    "export": { "title": "Exportar" }
+    "transcribe": {
+      "title": "Gerar legenda"
+    },
+    "edit": {
+      "title": "Editar legenda"
+    },
+    "export": {
+      "title": "Exportar"
+    }
   },
   "notFound": {
     "title": "Página não encontrada",
     "body": "Este endereço não existe.",
     "home": "Voltar ao início"
+  },
+  "discard": {
+    "title": "Descartar esta legenda?",
+    "body": "Você ainda não baixou a legenda deste vídeo. Se começar outra, ela será perdida.",
+    "confirm": "Descartar e começar outra",
+    "cancel": "Continuar editando"
   }
 }

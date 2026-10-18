@@ -10,12 +10,14 @@ import { describe, expect, it } from 'vitest';
 
 import { mockMatchMedia } from '@/test/matchMedia';
 import { renderRoute } from '@/test/renderRoute';
+import { seedSession } from '@/test/session';
 import { initTheme } from '@/theme/theme';
 
 import { Stepper } from './Stepper';
 
 describe('Requirement: Cabeçalho em todas as telas', () => {
   it('Scenario: Cabeçalho presente', async () => {
+    seedSession({ cues: true, downloaded: true });
     for (const path of ['/', '/edit', '/rota-inexistente']) {
       const { unmount } = renderRoute(path);
       const header = await screen.findByRole('banner');
@@ -29,6 +31,7 @@ describe('Requirement: Cabeçalho em todas as telas', () => {
   });
 
   it('Scenario: Marca leva ao início', async () => {
+    seedSession({ cues: true, downloaded: true });
     const { router } = renderRoute('/edit');
     await userEvent.click(await screen.findByRole('link', { name: /Gerador de Legenda/ }));
     expect(router.state.location.pathname).toBe('/');
@@ -66,6 +69,7 @@ describe('Requirement: Rodapé de privacidade', () => {
 
 describe('Requirement: Stepper das etapas', () => {
   it('Scenario: Etapa atual destacada', async () => {
+    seedSession({ cues: true });
     renderRoute('/edit');
     const nav = await screen.findByRole('navigation', { name: 'Etapas' });
     const items = within(nav).getAllByRole('listitem');
@@ -94,6 +98,7 @@ describe('Requirement: Stepper das etapas', () => {
   });
 
   it('Scenario: Navegar por uma etapa disponível', async () => {
+    seedSession({ cues: true });
     const { router } = renderRoute('/edit');
     await userEvent.click(await screen.findByRole('link', { name: /Transcrever/ }));
     expect(router.state.location.pathname).toBe('/transcribe');

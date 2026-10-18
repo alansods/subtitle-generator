@@ -17,13 +17,25 @@
     "export": "Export"
   },
   "pages": {
-    "transcribe": { "title": "Generate subtitles" },
-    "edit": { "title": "Edit subtitles" },
-    "export": { "title": "Export" }
+    "transcribe": {
+      "title": "Generate subtitles"
+    },
+    "edit": {
+      "title": "Edit subtitles"
+    },
+    "export": {
+      "title": "Export"
+    }
   },
   "notFound": {
     "title": "Page not found",
     "body": "This address does not exist.",
     "home": "Back to home"
+  },
+  "discard": {
+    "title": "Discard these subtitles?",
+    "body": "You have not downloaded the subtitles for this video yet. If you start over, they will be lost.",
+    "confirm": "Discard and start over",
+    "cancel": "Keep editing"
   }
 }

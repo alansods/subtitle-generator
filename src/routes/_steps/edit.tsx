@@ -1,7 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { useTranslation } from 'react-i18next';
 
+import { requireCues } from '@/lib/session/guards';
+
 export const Route = createFileRoute('/_steps/edit')({
+  beforeLoad: requireCues,
   component: EditPage,
 });
 
