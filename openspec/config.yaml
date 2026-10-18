@@ -82,12 +82,15 @@ context: |
   - Nenhum texto de UI fixo em componente: tudo vem de src/i18n/locales/{pt-BR,en}.json.
 
   Ordem das mudanças (uma por vez: propor, aprovar, implementar, arquivar):
-  setup-project, add-app-shell, add-i18n, add-theming, add-preferences, add-session,
-  add-video-upload, add-subtitle-formats, add-transcription (com escolha automática e
-  "Refazer com mais precisão"), add-cue-segmentation, add-subtitle-editor-core,
-  add-subtitle-validation, add-editor-timeline, add-editor-shortcuts-and-history,
-  add-subtitle-style, add-subtitle-export, add-video-export, add-completion-screen,
+  setup-project (feito), add-i18n, add-theming, add-app-shell, add-session,
+  add-video-upload, add-subtitle-formats, add-cue-segmentation, add-transcription (com
+  escolha automática do modelo), add-subtitle-editor-core, add-subtitle-validation,
+  add-subtitle-style, add-subtitle-export, add-completion-screen → primeiro ponto de
+  teste manual do fluxo completo. Depois: add-editor-timeline,
+  add-editor-shortcuts-and-history, add-retranscribe-more-accuracy, add-video-export,
   deploy-cloudflare-pages.
+  Preferências (idioma e tema) pertencem às capabilities i18n e theming; não há mudança
+  add-preferences separada.
 
   Processo:
   - Spec-Driven: nenhum código é escrito sem uma mudança OpenSpec aprovada por humano.
@@ -101,7 +104,7 @@ context: |
 rules:
   specs:
     - Cada requisito usa "### Requirement:" com SHALL ou MUST e tem ao menos um "#### Scenario:" com WHEN/THEN (AND quando necessário).
-    - Capabilities válidas - app-shell, i18n, theming, session, video-upload, transcription, cue-segmentation, subtitle-editor, subtitle-validation, subtitle-style, preferences, subtitle-export, video-export, completion. Infraestrutura sem comportamento de usuário usa project-tooling. Não existem project-library nem persistence (removidas por decisão de produto).
+    - Capabilities válidas - app-shell, i18n, theming, session, video-upload, transcription, cue-segmentation, subtitle-editor, subtitle-validation, subtitle-style, subtitle-export, video-export, completion. Infraestrutura sem comportamento de usuário usa project-tooling. Não existem project-library nem persistence (removidas por decisão de produto).
   tasks:
     - Toda task que implementa um cenário inclui o teste correspondente citando o nome do cenário.
     - Incluir ao final tasks de verificação - openspec validate --strict, tsc --noEmit, lint e testes passando, nenhum texto de UI sem tradução.
