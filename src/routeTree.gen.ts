@@ -10,33 +10,73 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StepsRouteImport } from './routes/_steps'
+import { Route as StepsEditRouteImport } from './routes/_steps/edit'
+import { Route as StepsExportRouteImport } from './routes/_steps/export'
+import { Route as StepsTranscribeRouteImport } from './routes/_steps/transcribe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StepsRoute = StepsRouteImport.update({
+  id: '/_steps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StepsEditRoute = StepsEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => StepsRoute,
+} as any)
+const StepsExportRoute = StepsExportRouteImport.update({
+  id: '/export',
+  path: '/export',
+  getParentRoute: () => StepsRoute,
+} as any)
+const StepsTranscribeRoute = StepsTranscribeRouteImport.update({
+  id: '/transcribe',
+  path: '/transcribe',
+  getParentRoute: () => StepsRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/edit': typeof StepsEditRoute
+  '/export': typeof StepsExportRoute
+  '/transcribe': typeof StepsTranscribeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/edit': typeof StepsEditRoute
+  '/export': typeof StepsExportRoute
+  '/transcribe': typeof StepsTranscribeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_steps': typeof StepsRouteWithChildren
+  '/_steps/edit': typeof StepsEditRoute
+  '/_steps/export': typeof StepsExportRoute
+  '/_steps/transcribe': typeof StepsTranscribeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/edit' | '/export' | '/transcribe'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/edit' | '/export' | '/transcribe'
+  id:
+    | '__root__'
+    | '/'
+    | '/_steps'
+    | '/_steps/edit'
+    | '/_steps/export'
+    | '/_steps/transcribe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  StepsRoute: typeof StepsRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +88,54 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_steps': {
+      id: '/_steps'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof StepsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_steps/edit': {
+      id: '/_steps/edit'
+      path: '/edit'
+      fullPath: '/edit'
+      preLoaderRoute: typeof StepsEditRouteImport
+      parentRoute: typeof StepsRoute
+    }
+    '/_steps/export': {
+      id: '/_steps/export'
+      path: '/export'
+      fullPath: '/export'
+      preLoaderRoute: typeof StepsExportRouteImport
+      parentRoute: typeof StepsRoute
+    }
+    '/_steps/transcribe': {
+      id: '/_steps/transcribe'
+      path: '/transcribe'
+      fullPath: '/transcribe'
+      preLoaderRoute: typeof StepsTranscribeRouteImport
+      parentRoute: typeof StepsRoute
+    }
   }
 }
 
+interface StepsRouteChildren {
+  StepsEditRoute: typeof StepsEditRoute
+  StepsExportRoute: typeof StepsExportRoute
+  StepsTranscribeRoute: typeof StepsTranscribeRoute
+}
+
+const StepsRouteChildren: StepsRouteChildren = {
+  StepsEditRoute: StepsEditRoute,
+  StepsExportRoute: StepsExportRoute,
+  StepsTranscribeRoute: StepsTranscribeRoute,
+}
+
+const StepsRouteWithChildren = StepsRoute._addFileChildren(StepsRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  StepsRoute: StepsRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

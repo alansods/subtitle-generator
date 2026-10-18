@@ -1,5 +1,29 @@
 {
   "app": {
     "name": "Gerador de Legenda"
+  },
+  "header": {
+    "language": "Idioma da interface",
+    "themeToDark": "Ativar tema escuro",
+    "themeToLight": "Ativar tema claro"
+  },
+  "footer": {
+    "privacy": "Seu vídeo não sai do seu computador e nada fica salvo."
+  },
+  "steps": {
+    "label": "Etapas",
+    "transcribe": "Transcrever",
+    "edit": "Editar",
+    "export": "Exportar"
+  },
+  "pages": {
+    "transcribe": { "title": "Gerar legenda" },
+    "edit": { "title": "Editar legenda" },
+    "export": { "title": "Exportar" }
+  },
+  "notFound": {
+    "title": "Página não encontrada",
+    "body": "Este endereço não existe.",
+    "home": "Voltar ao início"
   }
 }

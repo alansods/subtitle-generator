@@ -10,7 +10,8 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   reporter: process.env.CI ? [['list'], ['html', { open: 'never' }]] : 'list',
-  use: { trace: 'on-first-retry' },
+  // Idioma fixo: sem isso o app abre em inglês (navegador en-US), como manda a regra de i18n.
+  use: { trace: 'on-first-retry', locale: 'pt-BR' },
   projects: [
     { name: 'dev', use: { ...devices['Desktop Chrome'], baseURL: DEV_URL } },
     { name: 'preview', use: { ...devices['Desktop Chrome'], baseURL: PREVIEW_URL } },
