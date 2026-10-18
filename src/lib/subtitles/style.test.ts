@@ -22,7 +22,7 @@ describe('Requirement: Equivalência com o vídeo gravado', () => {
   it('Scenario: Preto, M, inferior em 1080p', () => {
     expect(parts(styleToAss(DEFAULT_STYLE, 1080))).toEqual(
       expect.arrayContaining([
-        'FontName=Inter',
+        'FontName=Inter Medium',
         'Fontsize=59',
         'MarginV=65',
         'Alignment=2',

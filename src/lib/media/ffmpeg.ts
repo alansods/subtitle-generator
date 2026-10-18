@@ -1,19 +1,28 @@
 import { FFmpeg } from '@ffmpeg/ffmpeg';
 import { fetchFile, toBlobURL } from '@ffmpeg/util';
 
-// Core do ffmpeg.wasm vindo de CDN com versão fixa: o .wasm (~31 MB) passa do limite de
+// Core do ffmpeg.wasm vindo de CDN com versão fixa: o .wasm (~32 MB) passa do limite de
 // 25 MiB por arquivo do Cloudflare Pages. Fica no cache do navegador depois do 1º uso.
+// Com a página isolada (COOP/COEP), usa o core multi-thread, bem mais rápido.
 export const FFMPEG_CORE_VERSION = '0.12.10';
-export const FFMPEG_CORE_BASE = `https://cdn.jsdelivr.net/npm/@ffmpeg/core@${FFMPEG_CORE_VERSION}/dist/esm`;
+const CDN = 'https://cdn.jsdelivr.net/npm/@ffmpeg';
+
+export function ffmpegCoreBase(multiThread: boolean): string {
+  return `${CDN}/${multiThread ? 'core-mt' : 'core'}@${FFMPEG_CORE_VERSION}/dist/esm`;
+}
 
 let loading: Promise<FFmpeg> | null = null;
 
-export function loadFfmpeg(): Promise<FFmpeg> {
+export function loadFfmpeg(multiThread: boolean = globalThis.crossOriginIsolated): Promise<FFmpeg> {
   loading ??= (async () => {
+    const base = ffmpegCoreBase(multiThread);
     const ffmpeg = new FFmpeg();
     await ffmpeg.load({
-      coreURL: await toBlobURL(`${FFMPEG_CORE_BASE}/ffmpeg-core.js`, 'text/javascript'),
-      wasmURL: await toBlobURL(`${FFMPEG_CORE_BASE}/ffmpeg-core.wasm`, 'application/wasm'),
+      coreURL: await toBlobURL(`${base}/ffmpeg-core.js`, 'text/javascript'),
+      wasmURL: await toBlobURL(`${base}/ffmpeg-core.wasm`, 'application/wasm'),
+      ...(multiThread
+        ? { workerURL: await toBlobURL(`${base}/ffmpeg-core.worker.js`, 'text/javascript') }
+        : {}),
     });
     return ffmpeg;
   })().catch((error: unknown) => {
@@ -21,6 +30,18 @@ export function loadFfmpeg(): Promise<FFmpeg> {
     throw error;
   });
   return loading;
+}
+
+// Encerra o ffmpeg carregado (cancelamento); o próximo uso carrega de novo (do cache).
+export async function terminateFfmpeg(): Promise<void> {
+  const current = loading;
+  loading = null;
+  if (!current) return;
+  try {
+    (await current).terminate();
+  } catch {
+    // Já tinha falhado ao carregar: nada a encerrar.
+  }
 }
 
 // Extrai o áudio em 16 kHz mono, float32 little-endian (o formato que o Whisper usa).

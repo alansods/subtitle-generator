@@ -33,3 +33,30 @@ test.describe('Requirement: Baixar a legenda', () => {
     ).toBeVisible();
   });
 });
+
+// Mesmo fluxo com o exportador de vídeo falso: escolher "Vídeo com legenda" e baixar o MP4.
+test.describe('Requirement: Conclusão do vídeo', () => {
+  test('Scenario: Vídeo pronto', async ({ page }) => {
+    await page.goto('/');
+    await page.getByTestId('video-input').setInputFiles(sample);
+    await page.getByRole('button', { name: 'Gerar legenda' }).click();
+    await expect(page).toHaveURL(/\/edit$/, { timeout: 30_000 });
+    await page.getByRole('link', { name: 'Exportar', exact: true }).click();
+    await page.getByText('Vídeo com legenda', { exact: true }).click();
+    await expect(page.getByTestId('video-file-name')).toHaveText('sample-legendado.mp4');
+    await expect(page.getByRole('figure', { name: 'Prévia da legenda no vídeo' })).toBeVisible();
+
+    const downloadPromise = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Gerar vídeo' }).click();
+    const download = await downloadPromise;
+    expect(download.suggestedFilename()).toBe('sample-legendado.mp4');
+
+    await expect(page).toHaveURL(/\/done$/);
+    await expect(
+      page.getByRole('heading', { name: 'Pronto! Seu vídeo foi baixado.' }),
+    ).toBeVisible();
+    const again = page.waitForEvent('download');
+    await page.getByRole('button', { name: 'Baixar de novo' }).click();
+    expect((await again).suggestedFilename()).toBe('sample-legendado.mp4');
+  });
+});

@@ -61,6 +61,21 @@ describe('Requirement: Baixar de novo', () => {
   });
 });
 
+describe('Requirement: Baixar de novo', () => {
+  it('Scenario: Baixar o vídeo de novo', async () => {
+    seedSession({ cues: true });
+    const mp4 = new Blob(['mp4'], { type: 'video/mp4' });
+    useSession
+      .getState()
+      .markDownloaded({ kind: 'video', fileName: 'reuniao-legendado.mp4', blob: mp4 });
+    renderRoute('/done');
+    await screen.findByRole('heading', { name: 'Pronto! Seu vídeo foi baixado.' });
+    await userEvent.click(screen.getByRole('button', { name: 'Baixar de novo' }));
+    expect(clicked).toEqual(['reuniao-legendado.mp4']);
+    expect(createUrl.mock.calls.at(-1)?.[0]).toBe(mp4);
+  });
+});
+
 describe('Requirement: Voltar a editar este vídeo', () => {
   it('Scenario: Voltar ao editor', async () => {
     const { router } = await openDone();

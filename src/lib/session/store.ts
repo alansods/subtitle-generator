@@ -21,6 +21,8 @@ export interface SessionVideo {
 export interface SessionDownload {
   kind: 'subtitle' | 'video';
   fileName: string;
+  // MP4 já gerado (só vídeo): "Baixar de novo" reaproveita sem processar de novo.
+  blob?: Blob;
 }
 
 // Como a legenda atual foi gerada (para "refazer com mais precisão" no futuro).

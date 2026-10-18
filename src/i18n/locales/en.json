@@ -196,7 +196,31 @@
     "downloaded": "{{file}} downloaded.",
     "blocked_one": "{{count}} subtitle has an error. Fix it before downloading.",
     "blocked_other": "{{count}} subtitles have errors. Fix them before downloading.",
-    "fix": "Fix in editor"
+    "fix": "Fix in editor",
+    "mode": "What do you want to download?",
+    "videoWithSubtitle": "Video with subtitles",
+    "videoWithSubtitleDescription": "The whole video with the subtitles burned into the picture, in the style you choose. Plays in any player or social network.",
+    "video": {
+      "preview": "Subtitle preview on the video",
+      "explain": "The video is created here on your computer. Long videos may take a few minutes.",
+      "generate": "Create video",
+      "retry": "Try again",
+      "stages": {
+        "prepare": "Preparing",
+        "encode": "Creating video"
+      },
+      "remainingSeconds": "About {{count}} s left",
+      "remainingMinutes": "About {{count}} min left",
+      "hint": "You can keep using your computer. Don't close this tab.",
+      "cancel": "Cancel",
+      "failed": "Couldn't create the video. Please try again.",
+      "leave": {
+        "title": "Cancel creating the video?",
+        "body": "The video being created will be discarded if you leave this screen.",
+        "stay": "Stay here",
+        "go": "Leave and cancel"
+      }
+    }
   },
   "done": {
     "titleSubtitle": "Done! Your subtitles were downloaded.",

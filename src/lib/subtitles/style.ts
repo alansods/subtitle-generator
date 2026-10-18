@@ -11,6 +11,10 @@ export const subtitleStyleSchema = z.object({
 
 export type SubtitleStyle = z.infer<typeof subtitleStyleSchema>;
 
+// Nome de família do public/fonts/Inter-Medium.ttf. O ffmpeg.wasm não tem provedor de
+// fontes (sem substituição): com outro nome o libass não desenha nada.
+export const ASS_FONT_NAME = 'Inter Medium';
+
 export const DEFAULT_STYLE: SubtitleStyle = {
   background: 'black',
   fontSize: 'md',
@@ -81,7 +85,7 @@ export function styleToAss(style: SubtitleStyle, videoHeight: number): string {
       'BorderStyle=1,PrimaryColour=&H00FFFFFF,OutlineColour=&H00000000,Outline=2,Shadow=1',
   }[style.background];
   return [
-    'FontName=Inter',
+    `FontName=${ASS_FONT_NAME}`,
     `Fontsize=${String(fontSize)}`,
     look,
     `Alignment=${style.position === 'bottom' ? '2' : '8'}`,

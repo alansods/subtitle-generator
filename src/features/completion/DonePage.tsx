@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router';
 import { Check, Pencil, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import { downloadText } from '@/lib/download';
+import { downloadBlob, downloadText } from '@/lib/download';
 import { useSession } from '@/lib/session/store';
 import { buildSubtitleFile, formatFromFileName } from '@/lib/subtitles/files';
 
@@ -16,6 +16,11 @@ export function DonePage() {
   if (!downloaded) return null;
 
   const downloadAgain = () => {
+    // Vídeo: o mesmo MP4 já gerado, sem processar de novo.
+    if (downloaded.blob) {
+      downloadBlob(downloaded.fileName, downloaded.blob);
+      return;
+    }
     const { content, mime } = buildSubtitleFile(cues, formatFromFileName(downloaded.fileName));
     downloadText(downloaded.fileName, content, mime);
   };

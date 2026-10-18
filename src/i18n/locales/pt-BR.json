@@ -196,7 +196,31 @@
     "downloaded": "{{file}} baixado.",
     "blocked_one": "{{count}} legenda tem erro. Corrija antes de baixar.",
     "blocked_other": "{{count}} legendas têm erro. Corrija antes de baixar.",
-    "fix": "Corrigir no editor"
+    "fix": "Corrigir no editor",
+    "mode": "O que você quer baixar?",
+    "videoWithSubtitle": "Vídeo com legenda",
+    "videoWithSubtitleDescription": "O vídeo inteiro com a legenda gravada na imagem, no estilo que você escolher. Funciona em qualquer player ou rede social.",
+    "video": {
+      "preview": "Prévia da legenda no vídeo",
+      "explain": "O vídeo é gerado aqui no seu computador. Vídeos longos podem levar alguns minutos.",
+      "generate": "Gerar vídeo",
+      "retry": "Tentar de novo",
+      "stages": {
+        "prepare": "Preparando",
+        "encode": "Gerando vídeo"
+      },
+      "remainingSeconds": "Faltam cerca de {{count}} s",
+      "remainingMinutes": "Faltam cerca de {{count}} min",
+      "hint": "Pode continuar usando o computador. Não feche esta aba.",
+      "cancel": "Cancelar",
+      "failed": "Não foi possível gerar o vídeo. Tente de novo.",
+      "leave": {
+        "title": "Cancelar a geração do vídeo?",
+        "body": "O vídeo em geração será descartado se você sair desta tela.",
+        "stay": "Ficar aqui",
+        "go": "Sair e cancelar"
+      }
+    }
   },
   "done": {
     "titleSubtitle": "Pronto! Sua legenda foi baixada.",
