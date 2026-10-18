@@ -9,3 +9,4 @@ src/components/ui
 openspec
 .claude
 tests/tooling/fixtures
+dist-e2e

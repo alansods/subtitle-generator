@@ -21,6 +21,15 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  // Worker em módulo (o worker de transcrição importa dependências ESM).
+  worker: { format: 'es' },
+  // O ffmpeg.wasm cria o próprio worker; o pré-empacotamento do Vite quebra esse caminho.
+  // As dependências do worker entram já na subida do dev server; descobri-las depois faz o
+  // Vite recarregar a página, e a sessão (só em memória) se perde no meio da transcrição.
+  optimizeDeps: {
+    exclude: ['@ffmpeg/ffmpeg', '@ffmpeg/util'],
+    include: ['@huggingface/transformers', 'comlink'],
+  },
   server: { headers: crossOriginHeaders },
   preview: { headers: crossOriginHeaders },
   resolve: {

@@ -9,8 +9,13 @@ describe('Requirement: Sessão única em memória', () => {
   it('Scenario: Sessão começa vazia', async () => {
     vi.resetModules();
     const { useSession: freshSession } = await import('./store');
-    const { video, cues, downloaded } = freshSession.getState();
-    expect({ video, cues, downloaded }).toEqual({ video: null, cues: [], downloaded: null });
+    const { video, cues, downloaded, transcription } = freshSession.getState();
+    expect({ video, cues, downloaded, transcription }).toEqual({
+      video: null,
+      cues: [],
+      downloaded: null,
+      transcription: null,
+    });
   });
 
   it('Scenario: Nada é persistido', () => {

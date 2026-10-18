@@ -94,5 +94,37 @@
       "burn": "Video with subtitles in the image",
       "soft": "Video with toggleable subtitles"
     }
+  },
+  "transcribe": {
+    "language": "Language spoken in the video",
+    "languages": {
+      "pt": "Portuguese",
+      "en": "English",
+      "auto": "Detect automatically"
+    },
+    "explain": "Subtitles are generated right here on your computer. Long videos may take a few minutes.",
+    "slowBrowser": "In this browser, subtitles take longer to be ready.",
+    "generate": "Generate subtitles",
+    "retry": "Try again",
+    "import": "Import existing subtitles (.srt/.vtt)",
+    "importError": "This subtitle file could not be read. Use a valid .srt or .vtt.",
+    "running": "Generating subtitles",
+    "runningHint": "You can keep using your computer. Do not close this tab.",
+    "stages": {
+      "prepare": "Getting ready (first time only)",
+      "extract": "Extracting audio",
+      "transcribe": "Transcribing",
+      "segment": "Splitting into subtitles"
+    },
+    "done": "done",
+    "cancel": "Cancel",
+    "failed": "Could not generate subtitles for this video. Try again.",
+    "noSpeech": "No speech found in this video. Check the selected language or import subtitles.",
+    "leave": {
+      "title": "Cancel processing?",
+      "body": "The running transcription will be cancelled if you leave this screen.",
+      "stay": "Stay here",
+      "go": "Leave and cancel"
+    }
   }
 }

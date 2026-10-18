@@ -94,5 +94,37 @@
       "burn": "Vídeo com legenda na imagem",
       "soft": "Vídeo com legenda que liga e desliga"
     }
+  },
+  "transcribe": {
+    "language": "Idioma falado no vídeo",
+    "languages": {
+      "pt": "Português",
+      "en": "Inglês",
+      "auto": "Detectar automaticamente"
+    },
+    "explain": "A legenda é gerada aqui no seu computador. Se o vídeo for longo, pode levar alguns minutos.",
+    "slowBrowser": "Neste navegador a legenda demora mais para ficar pronta.",
+    "generate": "Gerar legenda",
+    "retry": "Tentar de novo",
+    "import": "Importar legenda existente (.srt/.vtt)",
+    "importError": "Não foi possível ler este arquivo de legenda. Use um .srt ou .vtt válido.",
+    "running": "Gerando legenda",
+    "runningHint": "Pode continuar usando o computador. Não feche esta aba.",
+    "stages": {
+      "prepare": "Preparando (só na primeira vez)",
+      "extract": "Extraindo áudio",
+      "transcribe": "Transcrevendo",
+      "segment": "Separando em legendas"
+    },
+    "done": "concluído",
+    "cancel": "Cancelar",
+    "failed": "Não foi possível gerar a legenda deste vídeo. Tente de novo.",
+    "noSpeech": "Não encontramos fala neste vídeo. Confira o idioma escolhido ou importe uma legenda.",
+    "leave": {
+      "title": "Cancelar o processamento?",
+      "body": "A transcrição em andamento será cancelada se você sair desta tela.",
+      "stay": "Ficar aqui",
+      "go": "Sair e cancelar"
+    }
   }
 }

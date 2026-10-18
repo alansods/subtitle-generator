@@ -22,10 +22,17 @@ export interface SessionDownload {
   fileName: string;
 }
 
+// Como a legenda atual foi gerada (para "refazer com mais precisão" no futuro).
+export interface SessionTranscription {
+  model: 'base' | 'small' | 'large';
+  language: 'pt' | 'en' | 'auto';
+}
+
 export interface SessionState {
   video: SessionVideo | null;
   cues: Cue[];
   downloaded: SessionDownload | null;
+  transcription: SessionTranscription | null;
 }
 
 export interface SessionActions {
@@ -33,10 +40,11 @@ export interface SessionActions {
   setCues: (cues: Cue[]) => void;
   updateCue: (id: string, patch: Partial<Omit<Cue, 'id'>>) => void;
   markDownloaded: (download: SessionDownload) => void;
+  setTranscription: (transcription: SessionTranscription) => void;
   reset: () => void;
 }
 
-const EMPTY: SessionState = { video: null, cues: [], downloaded: null };
+const EMPTY: SessionState = { video: null, cues: [], downloaded: null, transcription: null };
 
 function revoke(video: SessionVideo | null) {
   if (video) URL.revokeObjectURL(video.url);
@@ -60,6 +68,9 @@ export const useSession = create<SessionState & SessionActions>()((set, get) => 
   },
   markDownloaded: (downloaded) => {
     set({ downloaded });
+  },
+  setTranscription: (transcription) => {
+    set({ transcription });
   },
   reset: () => {
     revoke(get().video);
