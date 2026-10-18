@@ -37,5 +37,62 @@
     "body": "You have not downloaded the subtitles for this video yet. If you start over, they will be lost.",
     "confirm": "Discard and start over",
     "cancel": "Keep editing"
+  },
+  "home": {
+    "title": "Subtitles for your video, without the hassle",
+    "subtitle": "Pick the video, subtitles are generated on your computer, you review while watching and download. No sign-up, nothing to install.",
+    "perks": {
+      "free": "Free",
+      "noAccount": "No account or login",
+      "private": "The video stays on your computer",
+      "nothingSaved": "Nothing is saved"
+    },
+    "cta": "Ready to start?"
+  },
+  "upload": {
+    "dropTitle": "Drag a video here",
+    "or": "or",
+    "select": "Select video",
+    "checking": "Checking the video…",
+    "hint": "MP4, WebM or MOV · up to {{max}}",
+    "errors": {
+      "format": "This file is not a supported video. Use MP4, WebM or MOV.",
+      "tooLarge": "The file is {{size}}. The limit is {{max}}.",
+      "unplayable": "Your browser cannot play this video. Convert it to MP4 (H.264) and try again."
+    },
+    "warnLarge": "Large file ({{size}}). Transcription may be slow.",
+    "continue": "Continue anyway"
+  },
+  "how": {
+    "title": "How to make your subtitles",
+    "subtitle": "Four steps, from video to finished file.",
+    "choose": {
+      "title": "Pick the video",
+      "description": "Drag the file onto the page or click Select video.",
+      "limit": "up to 500 MB"
+    },
+    "generate": {
+      "title": "Generate subtitles",
+      "description": "Tell us which language is spoken and click Generate subtitles. Transcription runs on your computer.",
+      "progress": "Transcribing",
+      "pt": "Portuguese",
+      "en": "English",
+      "auto": "Automatic"
+    },
+    "review": {
+      "title": "Review while watching",
+      "description": "Subtitles show over the video as it plays. Spotted a mistake? Click the text and fix it right there.",
+      "caption": "Click here to fix",
+      "click": "Click to fix",
+      "timeline": "Adjust timing",
+      "undo": "Undo and redo"
+    },
+    "download": {
+      "title": "Download and done",
+      "description": "Take just the subtitle file or the subtitled video, in the style you like.",
+      "vtt": "VTT (YouTube)",
+      "burn": "Video with subtitles in the image",
+      "soft": "Video with toggleable subtitles"
+    }
   }
 }

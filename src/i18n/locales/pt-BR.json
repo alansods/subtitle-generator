@@ -37,5 +37,62 @@
     "body": "Você ainda não baixou a legenda deste vídeo. Se começar outra, ela será perdida.",
     "confirm": "Descartar e começar outra",
     "cancel": "Continuar editando"
+  },
+  "home": {
+    "title": "Legenda pronta para o seu vídeo, sem complicação",
+    "subtitle": "Escolha o vídeo, a legenda é gerada no seu computador, você revisa assistindo e baixa. Sem cadastro e sem instalar nada.",
+    "perks": {
+      "free": "Grátis",
+      "noAccount": "Sem conta nem login",
+      "private": "O vídeo fica no seu computador",
+      "nothingSaved": "Nada fica salvo"
+    },
+    "cta": "Pronto para começar?"
+  },
+  "upload": {
+    "dropTitle": "Arraste um vídeo para cá",
+    "or": "ou",
+    "select": "Selecionar vídeo",
+    "checking": "Verificando o vídeo…",
+    "hint": "MP4, WebM ou MOV · até {{max}}",
+    "errors": {
+      "format": "Este arquivo não é um vídeo aceito. Use MP4, WebM ou MOV.",
+      "tooLarge": "O arquivo tem {{size}}. O limite é {{max}}.",
+      "unplayable": "Seu navegador não consegue reproduzir este vídeo. Converta para MP4 (H.264) e tente de novo."
+    },
+    "warnLarge": "Arquivo grande ({{size}}). A transcrição pode ficar lenta.",
+    "continue": "Continuar mesmo assim"
+  },
+  "how": {
+    "title": "Como fazer sua legenda",
+    "subtitle": "Quatro passos, do vídeo ao arquivo pronto.",
+    "choose": {
+      "title": "Escolha o vídeo",
+      "description": "Arraste o arquivo para a página ou clique em Selecionar vídeo.",
+      "limit": "até 500 MB"
+    },
+    "generate": {
+      "title": "Gere a legenda",
+      "description": "Diga qual idioma é falado no vídeo e clique em Gerar legenda. A transcrição acontece no seu computador.",
+      "progress": "Transcrevendo",
+      "pt": "Português",
+      "en": "Inglês",
+      "auto": "Automático"
+    },
+    "review": {
+      "title": "Revise assistindo",
+      "description": "A legenda aparece sobre o vídeo enquanto ele toca. Viu um erro? Clique no texto e corrija ali mesmo.",
+      "caption": "Clique aqui para corrigir",
+      "click": "Clique para corrigir",
+      "timeline": "Ajuste os tempos",
+      "undo": "Desfazer e refazer"
+    },
+    "download": {
+      "title": "Baixe e pronto",
+      "description": "Leve só o arquivo de legenda ou o vídeo já legendado, no estilo que preferir.",
+      "vtt": "VTT (YouTube)",
+      "burn": "Vídeo com legenda na imagem",
+      "soft": "Vídeo com legenda que liga e desliga"
+    }
   }
 }

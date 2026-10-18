@@ -30,7 +30,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['**/*.js'],
+    files: ['**/*.{js,mjs}'],
     extends: [tseslint.configs.disableTypeChecked],
   },
   {
@@ -50,6 +50,11 @@ export default defineConfig([
   {
     files: ['*.config.{ts,js}', 'config/**/*.ts', 'tests/**/*.ts'],
     languageOptions: { globals: globals.node },
+  },
+  {
+    // Scripts usam Node e executam trechos no navegador via Playwright.
+    files: ['scripts/**/*.mjs'],
+    languageOptions: { globals: { ...globals.node, ...globals.browser } },
   },
   prettier,
 ]);
