@@ -6,11 +6,16 @@ test.describe('Requirement: Isolamento cross-origin em todos os ambientes', () =
   test('Scenario: Servidor de desenvolvimento isolado', async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'dev', 'Cenário do servidor de desenvolvimento');
 
-    const response = await page.goto('/');
-    const headers = response?.headers() ?? {};
+    const scriptResponse = page.waitForResponse((response) =>
+      response.url().includes('/src/main.tsx'),
+    );
+    const documentResponse = await page.goto('/');
 
-    for (const [name, value] of Object.entries(crossOriginHeaders)) {
-      expect(headers[name.toLowerCase()]).toBe(value);
+    for (const response of [documentResponse, await scriptResponse]) {
+      const headers = response?.headers() ?? {};
+      for (const [name, value] of Object.entries(crossOriginHeaders)) {
+        expect(headers[name.toLowerCase()], response?.url()).toBe(value);
+      }
     }
     expect(await page.evaluate(() => window.crossOriginIsolated)).toBe(true);
   });

@@ -89,7 +89,7 @@ O `vite.config.ts` usa esse objeto em `server.headers` e `preview.headers`. O `p
 
 | Cenário | Verificação |
 |---|---|
-| Servidor de desenvolvimento isolado | e2e `tests/e2e/cross-origin.spec.ts`, projeto `dev` (headers da resposta + `crossOriginIsolated`) |
+| Servidor de desenvolvimento isolado | e2e `tests/e2e/cross-origin.spec.ts`, projeto `dev` (headers do documento e de `/src/main.tsx` + `crossOriginIsolated`) |
 | Build de produção isolado | o mesmo e2e no projeto `preview` |
 | Configuração de hospedagem declara os headers | tooling `headers.test.ts`: `public/_headers` igual a `crossOriginHeaders` em `/*` |
 | Carga inicial limpa | e2e `tests/e2e/app-loads.spec.ts`: `app-root` visível e nenhum `console.error`/`pageerror` |
@@ -102,7 +102,8 @@ O `vite.config.ts` usa esse objeto em `server.headers` e `preview.headers`. O `p
 | Qualidade agregada passa | passo `npm run check` do CI |
 | Qualidade agregada falha com qualquer etapa | tooling `scripts.test.ts`: `scripts.check` encadeia `typecheck`, `lint`, `format:check` e `test` com `&&`, sem `\|\|` nem `;` |
 | Build gera artefatos estáticos | tooling `build.test.ts`: executa `vite build` num `outDir` temporário e confere `index.html` e `_headers` |
-| Catálogo compila | passo `npm run build-storybook` do CI |
+| Catálogo compila | tooling `storybook.test.ts`: `storybook build` num diretório temporário sai com 0 e gera `index.html` (o CI também roda `npm run build-storybook`) |
+| Catálogo exibe os dois temas | tooling `storybook.test.ts`: `index.json` do build tem as stories `Claro` e `Escuro` de `App/RootLayout` |
 | Pipeline executa as verificações | tooling `ci.test.ts`: lê `.github/workflows/ci.yml` (com `yaml`) e confere os gatilhos e os comandos |
 
 Cada teste cita o nome do cenário na descrição (`it('Scenario: Lint passa', …)`).
@@ -120,6 +121,15 @@ O Prettier usa `.prettierrc` com `singleQuote: true`, `semi: true`, `printWidth:
 ### D9. CI
 
 `.github/workflows/ci.yml` dispara em `push` e `pull_request` e roda num job `ubuntu-latest` com Node 24 e cache npm: `npm ci`, `npm run check`, `npm run test:tooling`, `npm run build`, `npm run build-storybook`, `npx playwright install --with-deps chromium` e `npm run test:e2e`. O relatório do Playwright é enviado como artefato em caso de falha.
+
+### D10. Ajustes descobertos na implementação
+
+- `tsconfig.node.json` inclui a lib `DOM`: os testes e2e são typechecados por ele e usam `window` dentro de `page.evaluate`.
+- `tsconfig.app.json` inclui `.storybook/*.ts` com padrão de arquivo explícito: o TypeScript ignora pastas que começam com ponto quando o `include` aponta só para o diretório, e o ESLint tipado precisa desses arquivos num projeto.
+- O plugin do router usa `routeFileIgnorePattern: '\.(test|stories)\.tsx?$'`, para testes e stories ao lado das rotas não virarem rotas.
+- `vite.config.ts` e `vitest.config.ts` importam módulos locais com extensão `.ts`, porque o Vite avisa que o loader nativo de config (futuro padrão) não resolve imports sem extensão.
+- O helper `tests/tooling/run.ts` remove códigos ANSI da saída, porque algumas ferramentas colorem mesmo fora de TTY.
+- Instalação de pacotes: o npm 10.9 falha (`edgesOut`) ao resolver peer dependencies opcionais (ex.: Vitest). Use o npm 11 do Node 24, que o CI já usa. O README registra isso.
 
 ## Risks / Trade-offs
 

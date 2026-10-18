@@ -11,7 +11,7 @@ Toda resposta servida pela aplicação SHALL incluir `Cross-Origin-Opener-Policy
 
 #### Scenario: Servidor de desenvolvimento isolado
 - **WHEN** a aplicação é aberta no navegador a partir do servidor de desenvolvimento
-- **THEN** as respostas incluem os headers `Cross-Origin-Opener-Policy: same-origin` e `Cross-Origin-Embedder-Policy: credentialless`
+- **THEN** a resposta do documento e a dos scripts da aplicação incluem os headers `Cross-Origin-Opener-Policy: same-origin` e `Cross-Origin-Embedder-Policy: credentialless`
 - **AND** `window.crossOriginIsolated` é `true`
 
 #### Scenario: Build de produção isolado
@@ -88,6 +88,10 @@ O projeto SHALL ter um catálogo de componentes que compila como site estático,
 #### Scenario: Catálogo compila
 - **WHEN** o comando de build do catálogo de componentes é executado
 - **THEN** ele termina com código de saída 0
+
+#### Scenario: Catálogo exibe os dois temas
+- **WHEN** o catálogo de componentes é compilado
+- **THEN** o layout raiz aparece como uma story no tema claro e outra no tema escuro
 
 ### Requirement: Integração contínua
 Todo push e pull request SHALL disparar uma pipeline que roda o comando agregado de qualidade, o build de produção e os testes end-to-end, falhando se qualquer um deles falhar.

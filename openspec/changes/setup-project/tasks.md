@@ -50,6 +50,8 @@
 - [x] 9.1 Instalar `storybook`, `@storybook/react-vite` e `@storybook/addon-themes`, criar `.storybook/main.ts` (stories em `src/**/*.stories.tsx`) e `.storybook/preview.ts` (importa `globals.css` e aplica `withThemeByClassName` com `light`/`dark` no `<html>`), e os scripts `storybook` e `build-storybook`. Verificar com `npm run build-storybook` saindo com código 0.
 - [x] 9.2 Criar uma story mínima (`src/app/RootLayout.stories.tsx`) que renderiza o layout raiz nos dois temas, sem texto de UI. Verificar que ela aparece no `storybook-static/index.json` gerado ("Scenario: Catálogo compila").
 
+- [x] 9.3 Escrever `tests/tooling/storybook.test.ts` com "Scenario: Catálogo compila" (build do catálogo num diretório temporário sai com 0) e "Scenario: Catálogo exibe os dois temas" (`index.json` tem as stories `Claro` e `Escuro` do layout raiz). Verificar com `npm run test:tooling` passando.
+
 ## 10. Integração contínua
 
 - [x] 10.1 Criar `.github/workflows/ci.yml` conforme o design D9 (gatilhos `push` e `pull_request`; Node 24; `npm ci`, `check`, `test:tooling`, `build`, `build-storybook`, instalação do Chromium, `test:e2e`; upload do relatório do Playwright em falha).
