@@ -53,7 +53,7 @@ function bestSplit(words: TimedWord[], rules: SegmentationRules): number {
     }
   }
   let bestKeep = words.length;
-  let bestGap = rules.pauseSec;
+  let bestGap: number = rules.pauseSec;
   for (let keep = 1; keep < words.length; keep++) {
     const gap = (words[keep]?.start ?? 0) - (words[keep - 1]?.end ?? 0);
     if (gap > bestGap && longEnough(keep)) {
