@@ -7,6 +7,17 @@ Aplicação web gratuita que gera legendas para vídeos direto no navegador: o u
 - Node 24 (veja `.nvmrc`; mínimo 22.12). Use o npm 11 que vem com o Node 24: o npm 10.9 tem um bug ao resolver peer dependencies opcionais (`Cannot read properties of null (reading 'edgesOut')`) ao instalar pacotes novos.
 - Chrome ou Edge atuais para desenvolver (WebGPU e `crossOriginIsolated`).
 
+## Testar localmente
+
+```bash
+npm ci
+npm run dev
+```
+
+Abra `http://localhost:5173` no Chrome ou no Edge. Na primeira transcrição, o navegador baixa o modelo Whisper (algumas centenas de MB, uma vez só; depois fica no cache). Com WebGPU o app usa o `whisper-small`; sem WebGPU, o `whisper-base`, mais lento.
+
+Para rodar o teste opcional com o modelo real: `RUN_REAL_MODEL=1 npx playwright test`.
+
 ## Comandos
 
 | Comando                           | O que faz                                                                       |
