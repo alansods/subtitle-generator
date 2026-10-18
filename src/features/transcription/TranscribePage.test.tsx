@@ -131,7 +131,7 @@ describe('Requirement: Progresso em etapas', () => {
       control.progress?.({ stage: 'transcribe', ratio: 0.5 });
     });
     expect(screen.getByTestId('stage-transcribe')).toHaveTextContent('50%');
-    expect(screen.getByTestId('stage-prepare')).toHaveTextContent('concluído');
+    expect(screen.getByTestId('stage-prepare')).toHaveTextContent(/^Preparando \(concluído\)$/);
     expect(screen.getByTestId('stage-extract')).toHaveTextContent('concluído');
     expect(screen.getByRole('progressbar')).toHaveAttribute('aria-valuenow', '63');
   });

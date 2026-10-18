@@ -111,7 +111,7 @@
     "running": "Gerando legenda",
     "runningHint": "Pode continuar usando o computador. Não feche esta aba.",
     "stages": {
-      "prepare": "Preparando (só na primeira vez)",
+      "prepare": "Preparando",
       "extract": "Extraindo áudio",
       "transcribe": "Transcrevendo",
       "segment": "Separando em legendas"

@@ -111,7 +111,7 @@
     "running": "Generating subtitles",
     "runningHint": "You can keep using your computer. Do not close this tab.",
     "stages": {
-      "prepare": "Getting ready (first time only)",
+      "prepare": "Getting ready",
       "extract": "Extracting audio",
       "transcribe": "Transcribing",
       "segment": "Splitting into subtitles"
