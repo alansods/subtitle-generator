@@ -1,26 +1,22 @@
 import type { Cue } from './types';
 
+// Avisos só para o que atrapalha a exibição. Duração e velocidade de leitura não geram
+// aviso: a legenda acompanha a fala, e quem fala rápido gera cues curtas e rápidas.
 export const VALIDATION_RULES = {
   maxLines: 2,
   maxLineChars: 42,
-  minDuration: 0.7,
-  maxDuration: 7,
-  maxCharsPerSecond: 17,
 } as const;
 
-export type IssueCode =
-  'order' | 'overlap' | 'empty' | 'lines' | 'lineLength' | 'tooShort' | 'tooLong' | 'readingSpeed';
+export type IssueCode = 'order' | 'overlap' | 'empty' | 'lines' | 'lineLength';
 
 // Erros bloqueiam a exportação; avisos só alertam.
 export interface CueIssue {
   code: IssueCode;
   level: 'error' | 'warning';
-  charsPerSecond?: number;
 }
 
 export function validateCue(cue: Cue, next?: Cue): CueIssue[] {
   const issues: CueIssue[] = [];
-  const duration = cue.end - cue.start;
   if (cue.start >= cue.end) issues.push({ code: 'order', level: 'error' });
   if (next && cue.end > next.start) issues.push({ code: 'overlap', level: 'error' });
   if (cue.text.trim() === '') issues.push({ code: 'empty', level: 'error' });
@@ -29,18 +25,6 @@ export function validateCue(cue: Cue, next?: Cue): CueIssue[] {
   if (lines.length > VALIDATION_RULES.maxLines) issues.push({ code: 'lines', level: 'warning' });
   if (lines.some((line) => line.length > VALIDATION_RULES.maxLineChars)) {
     issues.push({ code: 'lineLength', level: 'warning' });
-  }
-  if (duration > 0 && duration < VALIDATION_RULES.minDuration) {
-    issues.push({ code: 'tooShort', level: 'warning' });
-  }
-  if (duration > VALIDATION_RULES.maxDuration) issues.push({ code: 'tooLong', level: 'warning' });
-  const chars = cue.text.replace(/\n/g, '').length;
-  if (duration > 0 && chars / duration > VALIDATION_RULES.maxCharsPerSecond) {
-    issues.push({
-      code: 'readingSpeed',
-      level: 'warning',
-      charsPerSecond: Math.round((chars / duration) * 10) / 10,
-    });
   }
   return issues;
 }

@@ -32,18 +32,12 @@ describe('Requirement: Avisos de legenda', () => {
   });
 
   it('Scenario: Muito curta e muito longa', () => {
-    expect(codes(cue(0, 0.5, 'Oi.'))).toContain('tooShort');
-    expect(codes(cue(0, 8, 'Uma fala longa e lenta'))).toContain('tooLong');
+    expect(validateCue(cue(0, 0.5, 'Oi.'))).toEqual([]);
+    expect(validateCue(cue(0, 8, 'Uma fala longa e lenta'))).toEqual([]);
   });
 
   it('Scenario: Leitura rápida', () => {
-    const text = 'No final, escolha o estilo do fundo:\npreto, branco ou transparente.';
-    expect(text.replace('\n', '')).toHaveLength(66);
-    expect(validateCue(cue(22.8, 26.1, text))).toContainEqual({
-      code: 'readingSpeed',
-      level: 'warning',
-      charsPerSecond: 20,
-    });
+    expect(validateCue(cue(18.66, 19.88, 'características principais.'))).toEqual([]);
   });
 
   it('Scenario: Cue boa', () => {
@@ -54,7 +48,7 @@ describe('Requirement: Avisos de legenda', () => {
 describe('resumo', () => {
   it('conta erros, avisos e cues com problema', () => {
     const issues = validateCues([
-      cue(0, 0.5, 'Oi.', 'a'),
+      cue(0, 0.9, 'um\ndois\ntrês', 'a'),
       cue(1, 3, '', 'b'),
       cue(3.1, 5, 'Tudo certo aqui', 'c'),
     ]);

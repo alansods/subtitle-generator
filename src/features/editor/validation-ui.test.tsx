@@ -42,7 +42,7 @@ describe('Requirement: Resumo e filtro', () => {
   it('Scenario: Filtrar pelas cues com problema', async () => {
     const list = await openEditor([
       GOOD('a', 0),
-      { id: 'b', start: 3, end: 3.5, text: 'Pronto.' },
+      { id: 'b', start: 3, end: 3.9, text: 'Um\ndois\ntrês' },
       GOOD('c', 4),
       {
         id: 'd',
@@ -68,7 +68,12 @@ describe('Requirement: Resumo e filtro', () => {
   it('mostra erros e avisos juntos no resumo', async () => {
     await openEditor([
       { id: 'a', start: 0, end: 3, text: '' },
-      { id: 'b', start: 3.1, end: 3.5, text: 'Oi.' },
+      {
+        id: 'b',
+        start: 3.1,
+        end: 5,
+        text: 'Uma linha que passa bastante dos quarenta e dois caracteres',
+      },
     ]);
     expect(screen.getByRole('button', { name: '1 erro · 1 aviso' })).toBeInTheDocument();
   });

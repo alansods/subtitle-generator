@@ -2,7 +2,6 @@ import { AlertTriangle, Merge, Plus, Scissors, Trash2 } from 'lucide-react';
 import { memo, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useFormatters } from '@/i18n/format';
 import { useSession } from '@/lib/session/store';
 import type { Cue } from '@/lib/subtitles/types';
 import { summarizeIssues, validateCues, type CueIssue } from '@/lib/subtitles/validation';
@@ -37,7 +36,6 @@ interface RowProps {
 
 function IssueBadges({ issues }: { issues: CueIssue[] }) {
   const { t } = useTranslation();
-  const format = useFormatters();
   return (
     <ul className="flex flex-wrap gap-1">
       {issues.map((issue) => (
@@ -50,9 +48,7 @@ function IssueBadges({ issues }: { issues: CueIssue[] }) {
               : 'bg-warning-soft text-warning',
           )}
         >
-          {issue.code === 'readingSpeed'
-            ? t('validation.readingSpeed', { cps: format.number(issue.charsPerSecond ?? 0) })
-            : t(`validation.${issue.code}`)}
+          {t(`validation.${issue.code}`)}
         </li>
       ))}
     </ul>

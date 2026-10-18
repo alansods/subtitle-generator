@@ -90,7 +90,7 @@ describe('Requirement: Erros bloqueiam o download', () => {
 
   it('Scenario: Só avisos', async () => {
     seedSession({ cues: true });
-    useSession.getState().updateCue('c2', { end: 4.8 }); // 0,4 s: aviso de duração curta
+    useSession.getState().updateCue('c2', { text: 'um\ndois\ntrês' }); // aviso: mais de 2 linhas
     await openExport();
     expect(screen.getByRole('button', { name: 'Baixar legenda' })).toBeEnabled();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();

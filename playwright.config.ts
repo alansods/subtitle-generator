@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
-const DEV_URL = 'http://localhost:5173';
-const PREVIEW_URL = 'http://localhost:4173';
+// Portas próprias (5273/4273): o e2e não disputa a porta do `npm run dev` (5173).
+const DEV_URL = 'http://localhost:5273';
+const PREVIEW_URL = 'http://localhost:4273';
 const REAL_URL = 'http://localhost:5174';
 
 // Os testes rodam contra o dev server e contra um build próprio (dist-e2e), os dois com o
@@ -50,7 +51,7 @@ export default defineConfig({
       ]
     : [
         {
-          command: 'npm run dev -- --port 5173 --strictPort',
+          command: 'npm run dev -- --port 5273 --strictPort',
           url: DEV_URL,
           env: fake,
           // Nunca reaproveitar: um servidor já aberto pode estar sem VITE_TRANSCRIBER=fake.
@@ -59,7 +60,7 @@ export default defineConfig({
         },
         {
           command:
-            'npx vite build --outDir dist-e2e --emptyOutDir && npx vite preview --outDir dist-e2e --port 4173 --strictPort',
+            'npx vite build --outDir dist-e2e --emptyOutDir && npx vite preview --outDir dist-e2e --port 4273 --strictPort',
           url: PREVIEW_URL,
           env: fake,
           // Nunca reaproveitar: um servidor já aberto pode estar sem VITE_TRANSCRIBER=fake.

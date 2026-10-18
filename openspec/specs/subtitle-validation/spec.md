@@ -21,7 +21,7 @@ Uma cue SHALL ter erro quando o início é maior ou igual ao fim, quando termina
 - **THEN** ela tem o erro "texto vazio"
 
 ### Requirement: Avisos de legenda
-Uma cue SHALL ter aviso quando tem mais de 2 linhas, quando alguma linha passa de 42 caracteres, quando dura menos de 0,7 s ou mais de 7 s, ou quando a leitura passa de 17 caracteres por segundo (caracteres sem as quebras de linha divididos pela duração).
+Uma cue SHALL ter aviso apenas quando o texto não cabe bem na tela: quando tem mais de 2 linhas ou quando alguma linha passa de 42 caracteres. Duração e velocidade de leitura MUST NOT gerar aviso, porque a legenda acompanha a fala.
 
 #### Scenario: Linha longa
 - **WHEN** uma cue tem uma linha de 49 caracteres
@@ -32,12 +32,12 @@ Uma cue SHALL ter aviso quando tem mais de 2 linhas, quando alguma linha passa d
 - **THEN** ela tem o aviso "mais de 2 linhas"
 
 #### Scenario: Muito curta e muito longa
-- **WHEN** uma cue dura 0,5 s e outra dura 8 s
-- **THEN** a primeira tem o aviso de duração menor que 0,7 s e a segunda, de duração maior que 7 s
+- **WHEN** uma cue dura 0,5 s e outra dura 8 s, ambas com uma linha curta
+- **THEN** nenhuma delas tem aviso
 
 #### Scenario: Leitura rápida
-- **WHEN** uma cue de 3,3 s tem 66 caracteres
-- **THEN** ela tem o aviso de leitura rápida com 20 caracteres por segundo
+- **WHEN** uma cue de 1,22 s tem o texto "características principais." (22 caracteres por segundo)
+- **THEN** ela não tem aviso
 
 #### Scenario: Cue boa
 - **WHEN** uma cue de 3 s tem uma linha de 30 caracteres e não se sobrepõe à seguinte
