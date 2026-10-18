@@ -188,5 +188,17 @@
       "bottom": "Inferior",
       "top": "Superior"
     }
+  },
+  "export": {
+    "back": "Voltar ao editor",
+    "subtitleOnly": "Somente legenda",
+    "subtitleOnlyDescription": "Arquivo .srt ou .vtt, compatível com o YouTube. Download instantâneo.",
+    "format": "Formato",
+    "fileName": "Nome do arquivo",
+    "download": "Baixar legenda",
+    "downloaded": "{{file}} baixado.",
+    "blocked_one": "{{count}} legenda tem erro. Corrija antes de baixar.",
+    "blocked_other": "{{count}} legendas têm erro. Corrija antes de baixar.",
+    "fix": "Corrigir no editor"
   }
 }

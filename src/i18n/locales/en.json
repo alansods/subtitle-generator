@@ -188,5 +188,17 @@
       "bottom": "Bottom",
       "top": "Top"
     }
+  },
+  "export": {
+    "back": "Back to editor",
+    "subtitleOnly": "Subtitles only",
+    "subtitleOnlyDescription": ".srt or .vtt file, YouTube compatible. Instant download.",
+    "format": "Format",
+    "fileName": "File name",
+    "download": "Download subtitles",
+    "downloaded": "{{file}} downloaded.",
+    "blocked_one": "{{count}} subtitle has an error. Fix it before downloading.",
+    "blocked_other": "{{count}} subtitles have errors. Fix them before downloading.",
+    "fix": "Fix in editor"
   }
 }
