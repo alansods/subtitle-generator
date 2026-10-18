@@ -126,5 +126,31 @@
       "stay": "Stay here",
       "go": "Leave and cancel"
     }
+  },
+  "editor": {
+    "play": "Play",
+    "pause": "Pause",
+    "position": "Video position",
+    "speed": "Speed",
+    "volume": "Volume",
+    "fullscreen": "Fullscreen",
+    "editCue": "Edit subtitle",
+    "editHint": "Enter saves · Shift+Enter new line · Esc cancels",
+    "emptyCue": "Write subtitle",
+    "addHere": "+ Add subtitle here",
+    "cues": "Subtitles",
+    "follow": "Follow video",
+    "seekTo": "Go to subtitle {{n}}",
+    "startEarlier": "Subtitle {{n}} start 0.1 s earlier",
+    "startLater": "Subtitle {{n}} start 0.1 s later",
+    "endEarlier": "Subtitle {{n}} end 0.1 s earlier",
+    "endLater": "Subtitle {{n}} end 0.1 s later",
+    "cueText": "Text of subtitle {{n}}",
+    "split": "Split",
+    "merge": "Merge with next",
+    "insertAfter": "Insert after",
+    "delete": "Delete",
+    "export": "Export",
+    "controls": "Video controls"
   }
 }

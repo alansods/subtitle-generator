@@ -42,6 +42,36 @@ if (typeof blobProto.arrayBuffer !== 'function') {
   });
 }
 
+// O jsdom não reproduz mídia: play/pause só trocam `paused` e disparam os eventos.
+Object.defineProperty(HTMLMediaElement.prototype, 'play', {
+  configurable: true,
+  value(this: HTMLMediaElement) {
+    Object.defineProperty(this, 'paused', { configurable: true, value: false });
+    this.dispatchEvent(new Event('play'));
+    return Promise.resolve();
+  },
+});
+Object.defineProperty(HTMLMediaElement.prototype, 'pause', {
+  configurable: true,
+  value(this: HTMLMediaElement) {
+    Object.defineProperty(this, 'paused', { configurable: true, value: true });
+    this.dispatchEvent(new Event('pause'));
+  },
+});
+
+// currentTime guardado por elemento; atribuir dispara timeupdate, como no navegador.
+const mediaTimes = new WeakMap<HTMLMediaElement, number>();
+Object.defineProperty(HTMLMediaElement.prototype, 'currentTime', {
+  configurable: true,
+  get(this: HTMLMediaElement) {
+    return mediaTimes.get(this) ?? 0;
+  },
+  set(this: HTMLMediaElement, value: number) {
+    mediaTimes.set(this, value);
+    this.dispatchEvent(new Event('timeupdate'));
+  },
+});
+
 // Os testes partem sempre do português, independente do idioma do jsdom (en-US).
 beforeEach(async () => {
   window.localStorage.clear();

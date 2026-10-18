@@ -1,14 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useTranslation } from 'react-i18next';
 
+import { EditorPage } from '@/features/editor/EditorPage';
 import { requireCues } from '@/lib/session/guards';
 
 export const Route = createFileRoute('/_steps/edit')({
   beforeLoad: requireCues,
-  component: EditPage,
+  component: EditorPage,
 });
-
-function EditPage() {
-  const { t } = useTranslation();
-  return <h1 className="text-[26px] font-semibold">{t('pages.edit.title')}</h1>;
-}

@@ -126,5 +126,31 @@
       "stay": "Ficar aqui",
       "go": "Sair e cancelar"
     }
+  },
+  "editor": {
+    "play": "Reproduzir",
+    "pause": "Pausar",
+    "position": "Posição do vídeo",
+    "speed": "Velocidade",
+    "volume": "Volume",
+    "fullscreen": "Tela cheia",
+    "editCue": "Editar legenda",
+    "editHint": "Enter salva · Shift+Enter quebra linha · Esc cancela",
+    "emptyCue": "Escrever legenda",
+    "addHere": "+ Adicionar legenda aqui",
+    "cues": "Legendas",
+    "follow": "Seguir vídeo",
+    "seekTo": "Ir para a legenda {{n}}",
+    "startEarlier": "Início da legenda {{n}} 0,1 s antes",
+    "startLater": "Início da legenda {{n}} 0,1 s depois",
+    "endEarlier": "Fim da legenda {{n}} 0,1 s antes",
+    "endLater": "Fim da legenda {{n}} 0,1 s depois",
+    "cueText": "Texto da legenda {{n}}",
+    "split": "Dividir",
+    "merge": "Juntar com a próxima",
+    "insertAfter": "Inserir depois",
+    "delete": "Excluir",
+    "export": "Exportar",
+    "controls": "Controles do vídeo"
   }
 }
