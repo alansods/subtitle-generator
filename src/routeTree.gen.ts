@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as StepsRouteImport } from './routes/_steps'
+import { Route as DoneRouteImport } from './routes/done'
 import { Route as StepsEditRouteImport } from './routes/_steps/edit'
 import { Route as StepsExportRouteImport } from './routes/_steps/export'
 import { Route as StepsTranscribeRouteImport } from './routes/_steps/transcribe'
@@ -22,6 +23,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const StepsRoute = StepsRouteImport.update({
   id: '/_steps',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DoneRoute = DoneRouteImport.update({
+  id: '/done',
+  path: '/done',
   getParentRoute: () => rootRouteImport,
 } as any)
 const StepsEditRoute = StepsEditRouteImport.update({
@@ -42,12 +48,14 @@ const StepsTranscribeRoute = StepsTranscribeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/done': typeof DoneRoute
   '/edit': typeof StepsEditRoute
   '/export': typeof StepsExportRoute
   '/transcribe': typeof StepsTranscribeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/done': typeof DoneRoute
   '/edit': typeof StepsEditRoute
   '/export': typeof StepsExportRoute
   '/transcribe': typeof StepsTranscribeRoute
@@ -56,19 +64,21 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_steps': typeof StepsRouteWithChildren
+  '/done': typeof DoneRoute
   '/_steps/edit': typeof StepsEditRoute
   '/_steps/export': typeof StepsExportRoute
   '/_steps/transcribe': typeof StepsTranscribeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/edit' | '/export' | '/transcribe'
+  fullPaths: '/' | '/done' | '/edit' | '/export' | '/transcribe'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/edit' | '/export' | '/transcribe'
+  to: '/' | '/done' | '/edit' | '/export' | '/transcribe'
   id:
     | '__root__'
     | '/'
     | '/_steps'
+    | '/done'
     | '/_steps/edit'
     | '/_steps/export'
     | '/_steps/transcribe'
@@ -77,6 +87,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   StepsRoute: typeof StepsRouteWithChildren
+  DoneRoute: typeof DoneRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -93,6 +104,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof StepsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/done': {
+      id: '/done'
+      path: '/done'
+      fullPath: '/done'
+      preLoaderRoute: typeof DoneRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_steps/edit': {
@@ -136,6 +154,7 @@ const StepsRouteWithChildren = StepsRoute._addFileChildren(StepsRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   StepsRoute: StepsRouteWithChildren,
+  DoneRoute: DoneRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

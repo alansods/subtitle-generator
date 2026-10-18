@@ -54,14 +54,16 @@ describe('Requirement: Tela de download da legenda', () => {
 describe('Requirement: Baixar a legenda', () => {
   it('Scenario: Baixar SRT', async () => {
     seedSession({ cues: true });
-    await openExport();
+    const { router } = await openExport();
     await userEvent.click(screen.getByRole('button', { name: 'Baixar legenda' }));
     expect(clicked.map((c) => c.name)).toEqual(['reuniao.srt']);
     expect(await lastBlob().text()).toBe(
       '1\n00:00:00,400 --> 00:00:04,200\nOlá! Neste vídeo vou mostrar\n\n2\n00:00:04,400 --> 00:00:07,000\ncomo gerar legendas no navegador.\n',
     );
     expect(useSession.getState().downloaded).toEqual({ kind: 'subtitle', fileName: 'reuniao.srt' });
-    expect(screen.getByRole('status')).toHaveTextContent('reuniao.srt baixado.');
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/done');
+    });
   });
 
   it('Scenario: Início depois de baixar', async () => {

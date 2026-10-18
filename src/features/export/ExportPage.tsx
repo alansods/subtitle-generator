@@ -1,4 +1,4 @@
-import { Link } from '@tanstack/react-router';
+import { Link, useNavigate } from '@tanstack/react-router';
 import { AlertCircle, ArrowLeft, Check, Download } from 'lucide-react';
 import { useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -7,16 +7,9 @@ import { Button } from '@/components/Button';
 import { buttonVariants } from '@/components/button-variants';
 import { downloadText } from '@/lib/download';
 import { useSession } from '@/lib/session/store';
-import { formatSrt } from '@/lib/subtitles/srt';
+import { buildSubtitleFile, SUBTITLE_FORMATS, type SubtitleFormat } from '@/lib/subtitles/files';
 import { summarizeIssues, validateCues } from '@/lib/subtitles/validation';
-import { formatVtt } from '@/lib/subtitles/vtt';
 import { cn } from '@/lib/utils';
-
-const FORMATS = {
-  srt: { label: 'SRT', mime: 'application/x-subrip', build: formatSrt },
-  vtt: { label: 'VTT', mime: 'text/vtt', build: formatVtt },
-} as const;
-type Format = keyof typeof FORMATS;
 
 export function ExportPage() {
   const { t } = useTranslation();
@@ -24,16 +17,18 @@ export function ExportPage() {
   const cues = useSession((s) => s.cues);
   const downloaded = useSession((s) => s.downloaded);
   const markDownloaded = useSession((s) => s.markDownloaded);
-  const [format, setFormat] = useState<Format>('srt');
+  const [format, setFormat] = useState<SubtitleFormat>('srt');
   const legendId = useId();
   const { cuesWithErrors } = useMemo(() => summarizeIssues(validateCues(cues)), [cues]);
   const blocked = cuesWithErrors > 0;
   const fileName = `${video?.name ?? 'legenda'}.${format}`;
 
+  const navigate = useNavigate();
   const download = () => {
-    const { mime, build } = FORMATS[format];
-    downloadText(fileName, build(cues), mime);
+    const { content, mime } = buildSubtitleFile(cues, format);
+    downloadText(fileName, content, mime);
     markDownloaded({ kind: 'subtitle', fileName });
+    void navigate({ to: '/done' });
   };
 
   return (
@@ -69,7 +64,7 @@ export function ExportPage() {
             {t('export.format')}
           </legend>
           <div className="flex flex-wrap gap-2">
-            {(Object.keys(FORMATS) as Format[]).map((option) => (
+            {(Object.keys(SUBTITLE_FORMATS) as SubtitleFormat[]).map((option) => (
               <label
                 key={option}
                 className={cn(
@@ -86,7 +81,7 @@ export function ExportPage() {
                   }}
                   className="sr-only"
                 />
-                {FORMATS[option].label}
+                {SUBTITLE_FORMATS[option].label}
               </label>
             ))}
           </div>

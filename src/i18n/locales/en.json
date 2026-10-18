@@ -200,5 +200,15 @@
     "blocked_one": "{{count}} subtitle has an error. Fix it before downloading.",
     "blocked_other": "{{count}} subtitles have errors. Fix them before downloading.",
     "fix": "Fix in editor"
+  },
+  "done": {
+    "titleSubtitle": "Done! Your subtitles were downloaded.",
+    "titleVideo": "Done! Your video was downloaded.",
+    "again": "Download again",
+    "edit": "Keep editing this video",
+    "editDescription": "Adjust the subtitles and download another version.",
+    "new": "Make new subtitles",
+    "newDescription": "Start over with another video. These subtitles are discarded.",
+    "note": "Nothing was stored. When you start new subtitles or close the tab, the video and subtitles are gone from this browser."
   }
 }

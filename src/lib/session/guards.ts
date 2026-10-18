@@ -17,3 +17,11 @@ export function requireCues() {
     throw redirect({ to: '/transcribe', replace: true });
   }
 }
+
+export function requireDownload() {
+  requireCues();
+  if (useSession.getState().downloaded === null) {
+    // eslint-disable-next-line @typescript-eslint/only-throw-error -- padrão do TanStack Router
+    throw redirect({ to: '/export', replace: true });
+  }
+}
