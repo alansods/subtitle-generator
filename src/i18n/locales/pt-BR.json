@@ -152,5 +152,21 @@
     "delete": "Excluir",
     "export": "Exportar",
     "controls": "Controles do vídeo"
+  },
+  "validation": {
+    "order": "Início depois do fim",
+    "overlap": "Sobrepõe a próxima legenda",
+    "empty": "Texto vazio",
+    "lines": "Mais de 2 linhas",
+    "lineLength": "Linha com mais de 42 caracteres",
+    "tooShort": "Duração menor que 0,7 s",
+    "tooLong": "Duração maior que 7 s",
+    "readingSpeed": "Leitura rápida: {{cps}} car/s (máx. 17)",
+    "errors_one": "{{count}} erro",
+    "errors_other": "{{count}} erros",
+    "warnings_one": "{{count}} aviso",
+    "warnings_other": "{{count}} avisos",
+    "filtering": "Mostrando só legendas com problema.",
+    "showAll": "Mostrar todas"
   }
 }

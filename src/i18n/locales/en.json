@@ -152,5 +152,21 @@
     "delete": "Delete",
     "export": "Export",
     "controls": "Video controls"
+  },
+  "validation": {
+    "order": "Start after end",
+    "overlap": "Overlaps the next subtitle",
+    "empty": "Empty text",
+    "lines": "More than 2 lines",
+    "lineLength": "Line over 42 characters",
+    "tooShort": "Shorter than 0.7 s",
+    "tooLong": "Longer than 7 s",
+    "readingSpeed": "Fast reading: {{cps}} chars/s (max 17)",
+    "errors_one": "{{count}} error",
+    "errors_other": "{{count}} errors",
+    "warnings_one": "{{count}} warning",
+    "warnings_other": "{{count}} warnings",
+    "filtering": "Showing only subtitles with issues.",
+    "showAll": "Show all"
   }
 }

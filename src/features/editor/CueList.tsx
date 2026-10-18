@@ -1,9 +1,11 @@
-import { Merge, Plus, Scissors, Trash2 } from 'lucide-react';
-import { memo, useEffect, useId, useRef, useState } from 'react';
+import { AlertTriangle, Merge, Plus, Scissors, Trash2 } from 'lucide-react';
+import { memo, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useFormatters } from '@/i18n/format';
 import { useSession } from '@/lib/session/store';
 import type { Cue } from '@/lib/subtitles/types';
+import { summarizeIssues, validateCues, type CueIssue } from '@/lib/subtitles/validation';
 import { cn } from '@/lib/utils';
 
 import {
@@ -18,6 +20,7 @@ import {
 import { playback, usePlayback } from './playback';
 
 const NUDGE = 0.1;
+const NO_ISSUES: CueIssue[] = [];
 
 const nudgeButton =
   'grid size-[26px] place-items-center rounded-md bg-card text-sm leading-none hover:bg-secondary focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none';
@@ -29,9 +32,34 @@ interface RowProps {
   number: number;
   active: boolean;
   isLast: boolean;
+  issues: CueIssue[];
 }
 
-const CueRow = memo(function CueRow({ cue, number, active, isLast }: RowProps) {
+function IssueBadges({ issues }: { issues: CueIssue[] }) {
+  const { t } = useTranslation();
+  const format = useFormatters();
+  return (
+    <ul className="flex flex-wrap gap-1">
+      {issues.map((issue) => (
+        <li
+          key={issue.code}
+          className={cn(
+            'rounded-full px-2.5 py-0.5 text-xs font-bold',
+            issue.level === 'error'
+              ? 'bg-danger-soft text-destructive'
+              : 'bg-warning-soft text-warning',
+          )}
+        >
+          {issue.code === 'readingSpeed'
+            ? t('validation.readingSpeed', { cps: format.number(issue.charsPerSecond ?? 0) })
+            : t(`validation.${issue.code}`)}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+const CueRow = memo(function CueRow({ cue, number, active, isLast, issues }: RowProps) {
   const { t } = useTranslation();
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const updateCue = useSession((s) => s.updateCue);
@@ -48,7 +76,11 @@ const CueRow = memo(function CueRow({ cue, number, active, isLast }: RowProps) {
       aria-current={active ? 'true' : undefined}
       className={cn(
         'flex flex-col gap-2 rounded-[18px] border-2 px-3.5 py-3',
-        active ? 'border-primary bg-accent' : 'border-transparent bg-secondary',
+        active
+          ? 'border-primary bg-accent'
+          : issues.some((issue) => issue.level === 'error')
+            ? 'border-destructive bg-card'
+            : 'border-transparent bg-secondary',
       )}
     >
       <div className="flex flex-wrap items-center gap-1.5">
@@ -121,6 +153,7 @@ const CueRow = memo(function CueRow({ cue, number, active, isLast }: RowProps) {
         }}
         className="w-full rounded-md border bg-card px-2.5 py-2 text-sm leading-snug"
       />
+      {issues.length > 0 && <IssueBadges issues={issues} />}
       <div className="flex flex-wrap gap-1">
         <button
           type="button"
@@ -179,6 +212,17 @@ export function CueList() {
   const cues = useSession((s) => s.cues);
   const activeId = usePlayback((s) => activeCueAt(cues, s.time)?.id);
   const [follow, setFollow] = useState(true);
+  const [onlyIssues, setOnlyIssues] = useState(false);
+  const issues = useMemo(() => validateCues(cues), [cues]);
+  const summary = summarizeIssues(issues);
+  const hasIssues = summary.cuesWithIssues > 0;
+  const filtering = onlyIssues && hasIssues;
+  const summaryLabel = [
+    summary.errors ? t('validation.errors', { count: summary.errors }) : null,
+    summary.warnings ? t('validation.warnings', { count: summary.warnings }) : null,
+  ]
+    .filter(Boolean)
+    .join(' · ');
   const listRef = useRef<HTMLOListElement>(null);
   const titleId = useId();
 
@@ -199,6 +243,25 @@ export function CueList() {
           {t('editor.cues')}{' '}
           <span className="text-sm font-normal text-muted-foreground">({cues.length})</span>
         </h2>
+        {hasIssues && (
+          <button
+            type="button"
+            aria-pressed={filtering}
+            onClick={() => {
+              setOnlyIssues(!filtering);
+            }}
+            className={cn(
+              'inline-flex min-h-9 items-center gap-1.5 rounded-full border px-3 text-[13px] font-bold focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none',
+              summary.errors
+                ? 'border-destructive text-destructive'
+                : 'border-warning text-warning',
+              filtering && (summary.errors ? 'bg-danger-soft' : 'bg-warning-soft'),
+            )}
+          >
+            <AlertTriangle aria-hidden="true" className="size-4" />
+            {summaryLabel}
+          </button>
+        )}
         <label className="ml-auto flex items-center gap-1.5 text-[13px]">
           <input
             type="checkbox"
@@ -211,20 +274,37 @@ export function CueList() {
           {t('editor.follow')}
         </label>
       </div>
+      {filtering && (
+        <p className="flex items-center gap-2 px-4 pb-2 text-[13px] text-muted-foreground">
+          {t('validation.filtering')}
+          <button
+            type="button"
+            onClick={() => {
+              setOnlyIssues(false);
+            }}
+            className="rounded px-0.5 text-accent-foreground underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          >
+            {t('validation.showAll')}
+          </button>
+        </p>
+      )}
       <ol
         ref={listRef}
         data-testid="cue-list"
         className="relative flex flex-1 flex-col gap-1.5 overflow-y-auto p-2"
       >
-        {cues.map((cue, index) => (
-          <CueRow
-            key={cue.id}
-            cue={cue}
-            number={index + 1}
-            active={cue.id === activeId}
-            isLast={index === cues.length - 1}
-          />
-        ))}
+        {cues.map((cue, index) =>
+          filtering && !issues.has(cue.id) ? null : (
+            <CueRow
+              key={cue.id}
+              cue={cue}
+              number={index + 1}
+              active={cue.id === activeId}
+              isLast={index === cues.length - 1}
+              issues={issues.get(cue.id) ?? NO_ISSUES}
+            />
+          ),
+        )}
       </ol>
     </section>
   );
