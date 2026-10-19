@@ -121,4 +121,12 @@
   html {
     @apply font-sans;
   }
+  /* O Tailwind v4 tirou o cursor de mão dos botões; clicável precisa parecer clicável. */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']),
+  select:not(:disabled),
+  input[type='checkbox']:not(:disabled),
+  input[type='range']:not(:disabled) {
+    cursor: pointer;
+  }
 }
