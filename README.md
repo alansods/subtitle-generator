@@ -50,3 +50,7 @@ O contexto do projeto (stack, princípios, decisões de produto e a ordem das mu
 ## Hospedagem
 
 Site estático no Cloudflare Pages (plano gratuito). `public/_headers` aplica `Cross-Origin-Opener-Policy: same-origin` e `Cross-Origin-Embedder-Policy: credentialless`, os mesmos headers que `config/cross-origin-headers.ts` aplica no dev e no preview.
+
+## Licença
+
+Código proprietário: todos os direitos reservados. O repositório é público só para consulta; copiar, modificar, distribuir ou usar o código exige autorização por escrito. Veja [LICENSE](LICENSE). Componentes de terceiros (fonte Inter, dependências npm) seguem as próprias licenças.

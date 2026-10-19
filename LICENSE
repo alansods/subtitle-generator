@@ -1,0 +1,27 @@
+Copyright (c) 2026 Alan Santos. Todos os direitos reservados.
+
+Este repositório é público apenas para consulta. Nenhuma licença é concedida.
+Sem autorização prévia e por escrito do titular, é proibido copiar, modificar,
+distribuir, publicar, sublicenciar, vender ou usar este software, no todo ou em
+parte, incluindo hospedá-lo ou oferecê-lo como serviço.
+
+Componentes de terceiros continuam sob as próprias licenças: a fonte Inter
+(SIL Open Font License 1.1, ver public/fonts/Inter-LICENSE.txt) e as
+dependências instaladas pelo npm, cada uma sob a licença indicada no seu pacote.
+
+O SOFTWARE É FORNECIDO "COMO ESTÁ", SEM GARANTIA DE QUALQUER TIPO.
+
+---
+
+Copyright (c) 2026 Alan Santos. All rights reserved.
+
+This repository is public for reference only. No license is granted.
+Without the copyright holder's prior written permission, you may not copy,
+modify, distribute, publish, sublicense, sell or use this software, in whole
+or in part, including hosting it or offering it as a service.
+
+Third-party components remain under their own licenses: the Inter font
+(SIL Open Font License 1.1, see public/fonts/Inter-LICENSE.txt) and the
+dependencies installed by npm, each under the license stated in its package.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
