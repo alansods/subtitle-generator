@@ -1,10 +1,9 @@
 import { Link, useNavigate } from '@tanstack/react-router';
-import { AlertCircle, ArrowLeft, Captions, Check, Download, Film } from 'lucide-react';
+import { AlertCircle, Captions, Check, Download, Film } from 'lucide-react';
 import { useId, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/Button';
-import { buttonVariants } from '@/components/button-variants';
 import { downloadText } from '@/lib/download';
 import { useSession } from '@/lib/session/store';
 import { buildSubtitleFile, SUBTITLE_FORMATS, type SubtitleFormat } from '@/lib/subtitles/files';
@@ -55,14 +54,6 @@ export function ExportPage() {
 
   return (
     <div className="flex flex-col gap-5">
-      <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-[26px] font-semibold">{t('pages.export.title')}</h1>
-        <Link to="/edit" className={buttonVariants({ variant: 'secondary', className: 'ml-auto' })}>
-          <ArrowLeft aria-hidden="true" />
-          {t('export.back')}
-        </Link>
-      </div>
-
       {blocked && (
         <div
           role="alert"

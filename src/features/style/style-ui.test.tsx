@@ -11,7 +11,7 @@ import { initTheme, setThemeMode } from '@/theme/theme';
 async function openEditorAtCue() {
   seedSession({ cues: true });
   const result = renderRoute('/edit');
-  await screen.findByRole('heading', { name: 'Editar legenda' });
+  await screen.findByRole('heading', { name: 'Revisar legenda' });
   const video = result.container.querySelector('video');
   act(() => {
     if (video) video.currentTime = 1;

@@ -28,7 +28,7 @@ const lastBlob = () => createUrl.mock.calls.at(-1)?.[0] as Blob;
 
 async function openExport() {
   const result = renderRoute('/export');
-  await screen.findByRole('heading', { name: 'Exportar' });
+  await screen.findByRole('heading', { name: 'Baixar' });
   return result;
 }
 
@@ -94,16 +94,5 @@ describe('Requirement: Erros bloqueiam o download', () => {
     await openExport();
     expect(screen.getByRole('button', { name: 'Baixar legenda' })).toBeEnabled();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-  });
-});
-
-describe('Requirement: Voltar ao editor', () => {
-  it('Scenario: Voltar', async () => {
-    seedSession({ cues: true });
-    const { router } = await openExport();
-    await userEvent.click(screen.getByRole('link', { name: 'Voltar ao editor' }));
-    await waitFor(() => {
-      expect(router.state.location.pathname).toBe('/edit');
-    });
   });
 });

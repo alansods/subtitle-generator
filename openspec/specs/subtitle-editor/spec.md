@@ -107,10 +107,3 @@ Trocar o idioma da interface SHALL mudar só os textos do app; o texto das cues 
 #### Scenario: Trocar para inglês no editor
 - **WHEN** o usuário troca a interface para inglês no editor
 - **THEN** os controles aparecem em inglês e o texto das cues não muda
-
-### Requirement: Ir para a exportação
-O editor SHALL ter o botão principal "Exportar", que leva para `/export`.
-
-#### Scenario: Exportar
-- **WHEN** o usuário ativa "Exportar"
-- **THEN** a aplicação vai para `/export`

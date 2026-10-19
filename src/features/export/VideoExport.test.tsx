@@ -77,7 +77,7 @@ afterEach(() => {
 async function openVideoExport() {
   seedSession({ cues: true });
   const result = renderRoute('/export');
-  await screen.findByRole('heading', { name: 'Exportar' });
+  await screen.findByRole('heading', { name: 'Baixar' });
   await userEvent.click(screen.getByRole('radio', { name: /Vídeo com legenda/ }));
   return result;
 }
@@ -155,7 +155,7 @@ describe('Requirement: Progresso e cancelamento', () => {
   it('Scenario: Sair durante a geração', async () => {
     const { router } = await openVideoExport();
     await generate();
-    await userEvent.click(screen.getByRole('link', { name: 'Voltar ao editor' }));
+    await userEvent.click(screen.getByRole('link', { name: 'Voltar' }));
     const dialog = await screen.findByRole('alertdialog', { name: 'Cancelar a geração do vídeo?' });
     expect(router.state.location.pathname).toBe('/export');
     await userEvent.click(within(dialog).getByRole('button', { name: 'Sair e cancelar' }));

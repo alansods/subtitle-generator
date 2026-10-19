@@ -12,19 +12,23 @@
   },
   "steps": {
     "label": "Steps",
-    "transcribe": "Transcribe",
-    "edit": "Edit",
-    "export": "Export"
+    "transcribe": "Generate subtitles",
+    "edit": "Review",
+    "export": "Download",
+    "back": "Back",
+    "next": "Next",
+    "navigation": "Step navigation",
+    "done": "done"
   },
   "pages": {
     "transcribe": {
       "title": "Generate subtitles"
     },
     "edit": {
-      "title": "Edit subtitles"
+      "title": "Review subtitles"
     },
     "export": {
-      "title": "Export"
+      "title": "Download"
     }
   },
   "notFound": {
@@ -150,7 +154,6 @@
     "merge": "Merge with next",
     "insertAfter": "Insert after",
     "delete": "Delete",
-    "export": "Export",
     "controls": "Video controls",
     "nowPlaying": "Now playing"
   },
@@ -188,7 +191,6 @@
     }
   },
   "export": {
-    "back": "Back to editor",
     "subtitleOnly": "Subtitles only",
     "subtitleOnlyDescription": ".srt or .vtt file, YouTube compatible. Instant download.",
     "format": "Format",

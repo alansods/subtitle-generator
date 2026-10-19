@@ -12,7 +12,7 @@ test.describe('Requirement: Baixar a legenda', () => {
     await page.getByTestId('video-input').setInputFiles(sample);
     await page.getByRole('button', { name: 'Gerar legenda' }).click();
     await expect(page).toHaveURL(/\/edit$/, { timeout: 30_000 });
-    await page.getByRole('link', { name: 'Exportar', exact: true }).click();
+    await page.getByRole('link', { name: 'Avançar', exact: true }).click();
     await expect(page).toHaveURL(/\/export$/);
 
     const downloadPromise = page.waitForEvent('download');
@@ -41,7 +41,7 @@ test.describe('Requirement: Conclusão do vídeo', () => {
     await page.getByTestId('video-input').setInputFiles(sample);
     await page.getByRole('button', { name: 'Gerar legenda' }).click();
     await expect(page).toHaveURL(/\/edit$/, { timeout: 30_000 });
-    await page.getByRole('link', { name: 'Exportar', exact: true }).click();
+    await page.getByRole('link', { name: 'Avançar', exact: true }).click();
     await page.getByText('Vídeo com legenda', { exact: true }).click();
     await expect(page.getByTestId('video-file-name')).toHaveText('sample-legendado.mp4');
     await expect(page.getByRole('figure', { name: 'Prévia da legenda no vídeo' })).toBeVisible();

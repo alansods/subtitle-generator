@@ -78,7 +78,9 @@ async function startTranscription() {
 describe('Requirement: Tela de transcrição sem escolhas técnicas', () => {
   it('Scenario: Idioma padrão', async () => {
     renderRoute('/transcribe');
-    expect(await screen.findByRole('radio', { name: 'Português' })).toBeChecked();
+    expect(
+      await screen.findByRole('combobox', { name: 'Idioma falado no vídeo' }),
+    ).toHaveDisplayValue('Português');
   });
 
   it('Scenario: Nada técnico na tela', async () => {
@@ -107,7 +109,10 @@ describe('Requirement: Escolha automática do modelo', () => {
 describe('Requirement: Transcrição fora da tela principal', () => {
   it('Scenario: Idioma enviado ao modelo (tela)', async () => {
     renderRoute('/transcribe');
-    await userEvent.click(await screen.findByRole('radio', { name: 'Inglês' }));
+    await userEvent.selectOptions(
+      await screen.findByRole('combobox', { name: 'Idioma falado no vídeo' }),
+      'en',
+    );
     await userEvent.click(screen.getByRole('button', { name: 'Gerar legenda' }));
     await waitFor(() => {
       expect(control.options?.language).toBe('en');
@@ -116,7 +121,10 @@ describe('Requirement: Transcrição fora da tela principal', () => {
 
   it('Scenario: Detecção automática (tela)', async () => {
     renderRoute('/transcribe');
-    await userEvent.click(await screen.findByRole('radio', { name: 'Detectar automaticamente' }));
+    await userEvent.selectOptions(
+      await screen.findByRole('combobox', { name: 'Idioma falado no vídeo' }),
+      'auto',
+    );
     await userEvent.click(screen.getByRole('button', { name: 'Gerar legenda' }));
     await waitFor(() => {
       expect(control.options?.language).toBe('auto');

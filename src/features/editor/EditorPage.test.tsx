@@ -19,7 +19,7 @@ async function openEditor(cues: Cue[] = FIVE_CUES) {
   seedSession();
   useSession.getState().setCues(cues);
   const result = renderRoute('/edit');
-  await screen.findByRole('heading', { name: 'Editar legenda' });
+  await screen.findByRole('heading', { name: 'Revisar legenda' });
   const video = result.container.querySelector('video');
   if (!video) throw new Error('sem <video>');
   const setTime = (time: number) => {
@@ -102,7 +102,7 @@ describe('Requirement: Editar na própria legenda', () => {
     const { field } = await startEditing();
     await userEvent.clear(field);
     await userEvent.type(field, 'Salvo no blur');
-    await userEvent.click(screen.getByRole('heading', { name: 'Editar legenda' }));
+    await userEvent.click(screen.getByRole('heading', { name: 'Revisar legenda' }));
     expect(cueText('c2')).toBe('Salvo no blur');
   });
 });
@@ -211,15 +211,5 @@ describe('Requirement: Idioma da interface não muda a legenda', () => {
     expect(useSession.getState().cues.map((cue) => cue.text)).toEqual(
       FIVE_CUES.map((cue) => cue.text),
     );
-  });
-});
-
-describe('Requirement: Ir para a exportação', () => {
-  it('Scenario: Exportar', async () => {
-    const { router } = await openEditor();
-    await userEvent.click(screen.getByRole('link', { name: 'Exportar' }));
-    await waitFor(() => {
-      expect(router.state.location.pathname).toBe('/export');
-    });
   });
 });

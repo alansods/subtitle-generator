@@ -87,7 +87,7 @@ describe('Requirement: Aviso ao fechar a aba', () => {
   it('Scenario: Fechar com legenda não baixada', async () => {
     seedSession({ cues: true });
     renderRoute('/edit');
-    await screen.findByRole('heading', { name: 'Editar legenda' });
+    await screen.findByRole('heading', { name: 'Revisar legenda' });
     expect(fireBeforeUnload().defaultPrevented).toBe(true);
   });
 

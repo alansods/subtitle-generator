@@ -89,10 +89,3 @@ Com ao menos um erro de validação nas cues, o download SHALL ficar desabilitad
 #### Scenario: Só avisos
 - **WHEN** as cues têm apenas avisos
 - **THEN** "Baixar legenda" está habilitado
-
-### Requirement: Voltar ao editor
-A tela de exportação SHALL ter "Voltar ao editor", que leva para `/edit`.
-
-#### Scenario: Voltar
-- **WHEN** o usuário ativa "Voltar ao editor"
-- **THEN** a aplicação vai para `/edit`

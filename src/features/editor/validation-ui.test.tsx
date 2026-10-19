@@ -11,7 +11,7 @@ async function openEditor(cues: Cue[]) {
   seedSession();
   useSession.getState().setCues(cues);
   renderRoute('/edit');
-  await screen.findByRole('heading', { name: 'Editar legenda' });
+  await screen.findByRole('heading', { name: 'Revisar legenda' });
   return within(screen.getByTestId('cue-list'));
 }
 

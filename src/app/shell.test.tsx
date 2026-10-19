@@ -4,7 +4,7 @@ import {
   createRouter,
   RouterProvider,
 } from '@tanstack/react-router';
-import { render, screen, within } from '@testing-library/react';
+import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
@@ -73,8 +73,12 @@ describe('Requirement: Stepper das etapas', () => {
     renderRoute('/edit');
     const nav = await screen.findByRole('navigation', { name: 'Etapas' });
     const items = within(nav).getAllByRole('listitem');
-    expect(items.map((item) => item.textContent)).toEqual(['1Transcrever', '2Editar', '3Exportar']);
-    expect(within(nav).getByText('Editar').closest('[aria-current]')).toHaveAttribute(
+    expect(items.map((item) => item.textContent)).toEqual([
+      'concluídaGerar legenda',
+      '2Revisar',
+      '3Baixar',
+    ]);
+    expect(within(nav).getByText('Revisar').closest('[aria-current]')).toHaveAttribute(
       'aria-current',
       'step',
     );
@@ -91,7 +95,7 @@ describe('Requirement: Stepper das etapas', () => {
       history: createMemoryHistory({ initialEntries: ['/edit'] }),
     });
     render(<RouterProvider router={router} />);
-    const exportStep = await screen.findByRole('button', { name: /Exportar/ });
+    const exportStep = await screen.findByRole('button', { name: /Baixar/ });
     expect(exportStep).toBeDisabled();
     await userEvent.click(exportStep);
     expect(router.state.location.pathname).toBe('/edit');
@@ -100,8 +104,41 @@ describe('Requirement: Stepper das etapas', () => {
   it('Scenario: Navegar por uma etapa disponível', async () => {
     seedSession({ cues: true });
     const { router } = renderRoute('/edit');
-    await userEvent.click(await screen.findByRole('link', { name: /Transcrever/ }));
+    await userEvent.click(await screen.findByRole('link', { name: /Gerar legenda/ }));
     expect(router.state.location.pathname).toBe('/transcribe');
+  });
+});
+
+describe('Requirement: Voltar e Avançar', () => {
+  const stepNav = () => screen.findByRole('navigation', { name: 'Navegação entre etapas' });
+
+  it('Scenario: Avançar da revisão', async () => {
+    seedSession({ cues: true });
+    const { router } = renderRoute('/edit');
+    await userEvent.click(within(await stepNav()).getByRole('link', { name: 'Avançar' }));
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/export');
+    });
+  });
+
+  it('Scenario: Voltar da exportação', async () => {
+    seedSession({ cues: true });
+    const { router } = renderRoute('/export');
+    const nav = await stepNav();
+    expect(within(nav).queryByRole('link', { name: 'Avançar' })).not.toBeInTheDocument();
+    expect(within(nav).queryByRole('button', { name: 'Avançar' })).not.toBeInTheDocument();
+    await userEvent.click(within(nav).getByRole('link', { name: 'Voltar' }));
+    await waitFor(() => {
+      expect(router.state.location.pathname).toBe('/edit');
+    });
+  });
+
+  it('Scenario: Avançar sem legenda', async () => {
+    seedSession();
+    renderRoute('/transcribe');
+    const nav = await stepNav();
+    expect(within(nav).queryByRole('link', { name: 'Voltar' })).not.toBeInTheDocument();
+    expect(within(nav).getByRole('button', { name: 'Avançar' })).toBeDisabled();
   });
 });
 

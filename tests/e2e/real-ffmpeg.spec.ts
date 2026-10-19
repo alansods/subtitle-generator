@@ -15,7 +15,7 @@ test('ffmpeg real grava a legenda no vídeo', async ({ page }) => {
   await page.getByTestId('video-input').setInputFiles(speech);
   await page.getByRole('button', { name: 'Gerar legenda' }).click();
   await expect(page).toHaveURL(/\/edit$/, { timeout: 30_000 });
-  await page.getByRole('link', { name: 'Exportar', exact: true }).click();
+  await page.getByRole('link', { name: 'Avançar', exact: true }).click();
   await page.getByText('Vídeo com legenda', { exact: true }).click();
 
   const started = Date.now();

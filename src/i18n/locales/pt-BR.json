@@ -12,19 +12,23 @@
   },
   "steps": {
     "label": "Etapas",
-    "transcribe": "Transcrever",
-    "edit": "Editar",
-    "export": "Exportar"
+    "transcribe": "Gerar legenda",
+    "edit": "Revisar",
+    "export": "Baixar",
+    "back": "Voltar",
+    "next": "Avançar",
+    "navigation": "Navegação entre etapas",
+    "done": "concluída"
   },
   "pages": {
     "transcribe": {
       "title": "Gerar legenda"
     },
     "edit": {
-      "title": "Editar legenda"
+      "title": "Revisar legenda"
     },
     "export": {
-      "title": "Exportar"
+      "title": "Baixar"
     }
   },
   "notFound": {
@@ -150,7 +154,6 @@
     "merge": "Juntar com a próxima",
     "insertAfter": "Inserir depois",
     "delete": "Excluir",
-    "export": "Exportar",
     "controls": "Controles do vídeo",
     "nowPlaying": "Tocando agora"
   },
@@ -188,7 +191,6 @@
     }
   },
   "export": {
-    "back": "Voltar ao editor",
     "subtitleOnly": "Somente legenda",
     "subtitleOnlyDescription": "Arquivo .srt ou .vtt, compatível com o YouTube. Download instantâneo.",
     "format": "Formato",

@@ -11,7 +11,7 @@ test.describe('Requirement: Conclusão', () => {
     await page.goto('/');
     await page.getByTestId('video-input').setInputFiles(sample);
     await expect(page).toHaveURL(/\/transcribe$/);
-    await expect(page.getByRole('radio', { name: 'Português' })).toBeChecked();
+    await expect(page.getByRole('combobox', { name: 'Idioma falado no vídeo' })).toHaveValue('pt');
     await page.getByRole('button', { name: 'Gerar legenda' }).click();
     await expect(page.getByRole('progressbar')).toBeVisible();
     await expect(page).toHaveURL(/\/edit$/, { timeout: 30_000 });

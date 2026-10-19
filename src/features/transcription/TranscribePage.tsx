@@ -1,5 +1,5 @@
 import { useBlocker, useNavigate } from '@tanstack/react-router';
-import { AlertCircle, Check } from 'lucide-react';
+import { AlertCircle, Check, ChevronDown } from 'lucide-react';
 import { useEffect, useId, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -34,7 +34,7 @@ export function TranscribePage() {
   );
   const [importError, setImportError] = useState(false);
   const importRef = useRef<HTMLInputElement>(null);
-  const legendId = useId();
+  const languageId = useId();
   const running = state.status === 'running';
 
   // Sair durante o processamento: confirma e cancela.
@@ -69,8 +69,7 @@ export function TranscribePage() {
   const stageIndex = running ? STAGES.indexOf(state.stage) : -1;
 
   return (
-    <div className="flex flex-col gap-4">
-      <h1 className="text-[26px] font-semibold">{t('pages.transcribe.title')}</h1>
+    <>
       <div className="flex flex-wrap items-start gap-7">
         <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-3">
           {video && (
@@ -97,36 +96,31 @@ export function TranscribePage() {
                   {t('transcribe.slowBrowser')}
                 </div>
               )}
-              <fieldset className="flex flex-col gap-2" aria-labelledby={legendId}>
-                <legend id={legendId} className="mb-2 text-[15px] font-semibold">
+              <div className="flex flex-col gap-2">
+                <label htmlFor={languageId} className="text-[15px] font-semibold">
                   {t('transcribe.language')}
-                </legend>
-                <div className="flex flex-wrap gap-1.5">
-                  {LANGUAGES.map((option) => (
-                    <label
-                      key={option}
-                      className={cn(
-                        'inline-flex min-h-11 cursor-pointer items-center rounded-full px-4 text-sm font-semibold has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring',
-                        language === option
-                          ? 'bg-ink text-ink-foreground'
-                          : 'bg-secondary text-foreground',
-                      )}
-                    >
-                      <input
-                        type="radio"
-                        name="spoken-language"
-                        value={option}
-                        checked={language === option}
-                        onChange={() => {
-                          setLanguage(option);
-                        }}
-                        className="sr-only"
-                      />
-                      {t(`transcribe.languages.${option}`)}
-                    </label>
-                  ))}
+                </label>
+                <div className="relative">
+                  <select
+                    id={languageId}
+                    value={language}
+                    onChange={(event) => {
+                      setLanguage(event.target.value as SpokenLanguage);
+                    }}
+                    className="min-h-11 w-full appearance-none rounded-xl border bg-secondary py-0 pr-10 pl-3.5 text-[15px] font-medium text-foreground focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+                  >
+                    {LANGUAGES.map((option) => (
+                      <option key={option} value={option}>
+                        {t(`transcribe.languages.${option}`)}
+                      </option>
+                    ))}
+                  </select>
+                  <ChevronDown
+                    aria-hidden="true"
+                    className="pointer-events-none absolute top-1/2 right-3.5 size-4 -translate-y-1/2 text-muted-foreground"
+                  />
                 </div>
-              </fieldset>
+              </div>
               <p className="text-sm leading-relaxed text-muted-foreground">
                 {t('transcribe.explain')}
               </p>
@@ -271,6 +265,6 @@ export function TranscribePage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </>
   );
 }
