@@ -151,7 +151,8 @@
     "insertAfter": "Inserir depois",
     "delete": "Excluir",
     "export": "Exportar",
-    "controls": "Controles do vídeo"
+    "controls": "Controles do vídeo",
+    "nowPlaying": "Tocando agora"
   },
   "validation": {
     "order": "Início depois do fim",

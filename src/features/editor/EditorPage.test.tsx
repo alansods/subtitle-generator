@@ -130,7 +130,10 @@ describe('Requirement: Lista de legendas', () => {
     await userEvent.click(screen.getByRole('button', { name: 'Ir para a legenda 2' }));
     expect(video.currentTime).toBeCloseTo(4.4, 2);
     const list = screen.getByTestId('cue-list');
-    expect(within(list).getAllByRole('listitem')[1]).toHaveAttribute('aria-current', 'true');
+    const items = within(list).getAllByRole('listitem');
+    expect(items[1]).toHaveAttribute('aria-current', 'true');
+    expect(items[1]).toHaveTextContent('Tocando agora');
+    expect(within(list).getAllByText('Tocando agora')).toHaveLength(1);
   });
 });
 

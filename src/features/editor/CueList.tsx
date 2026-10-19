@@ -1,4 +1,4 @@
-import { AlertTriangle, Merge, Plus, Scissors, Trash2 } from 'lucide-react';
+import { AlertTriangle, Merge, Play, Plus, Scissors, Trash2 } from 'lucide-react';
 import { memo, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -72,11 +72,11 @@ const CueRow = memo(function CueRow({ cue, number, active, isLast, issues }: Row
       aria-current={active ? 'true' : undefined}
       className={cn(
         'flex flex-col gap-2 rounded-[18px] border-2 px-3.5 py-3',
-        active
-          ? 'border-primary bg-accent'
-          : issues.some((issue) => issue.level === 'error')
-            ? 'border-destructive bg-card'
-            : 'border-transparent bg-secondary',
+        // Borda colorida só para erro; a cue ativa usa fundo suave, filete e rótulo.
+        issues.some((issue) => issue.level === 'error')
+          ? 'border-destructive bg-card'
+          : 'border-transparent',
+        active ? 'bg-accent shadow-[inset_4px_0_0_var(--primary)]' : 'bg-secondary',
       )}
     >
       <div className="flex flex-wrap items-center gap-1.5">
@@ -138,6 +138,12 @@ const CueRow = memo(function CueRow({ cue, number, active, isLast, issues }: Row
             +
           </button>
         </span>
+        {active && (
+          <span className="ml-auto inline-flex items-center gap-1.5 text-xs font-bold text-accent-foreground">
+            <Play aria-hidden="true" className="size-3 fill-current" />
+            {t('editor.nowPlaying')}
+          </span>
+        )}
       </div>
       <textarea
         ref={textareaRef}

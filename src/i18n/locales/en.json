@@ -151,7 +151,8 @@
     "insertAfter": "Insert after",
     "delete": "Delete",
     "export": "Export",
-    "controls": "Video controls"
+    "controls": "Video controls",
+    "nowPlaying": "Now playing"
   },
   "validation": {
     "order": "Start after end",
