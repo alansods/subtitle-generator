@@ -4,6 +4,7 @@ import { cleanup } from '@testing-library/react';
 import { afterEach, beforeEach, vi } from 'vitest';
 
 import { i18n } from '@/i18n';
+import { settleRouters } from '@/test/renderRoute';
 
 // O jsdom não implementa scrollTo, e o router o chama ao navegar.
 vi.spyOn(window, 'scrollTo').mockImplementation(() => undefined);
@@ -78,7 +79,8 @@ beforeEach(async () => {
   await i18n.changeLanguage('pt-BR');
 });
 
-afterEach(() => {
+afterEach(async () => {
+  await settleRouters();
   cleanup();
   vi.unstubAllGlobals();
 });
