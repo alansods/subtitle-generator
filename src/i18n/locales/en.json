@@ -89,15 +89,15 @@
       "caption": "Click here to fix",
       "click": "Click to fix",
       "timeline": "Adjust timing",
-      "undo": "Undo and redo"
+      "split": "Split and merge"
     },
     "download": {
       "title": "Download and done",
       "description": "Take just the subtitle file or the subtitled video, in the style you like.",
       "vtt": "VTT (YouTube)",
-      "burn": "Video with subtitles in the image",
-      "soft": "Video with toggleable subtitles"
-    }
+      "burn": "Video with subtitles in the image"
+    },
+    "sample": "team-meeting"
   },
   "transcribe": {
     "language": "Language spoken in the video",
@@ -222,7 +222,8 @@
         "body": "The video being created will be discarded if you leave this screen.",
         "stay": "Stay here",
         "go": "Leave and cancel"
-      }
+      },
+      "suffix": "subtitled"
     }
   },
   "done": {

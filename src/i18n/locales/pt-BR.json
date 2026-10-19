@@ -89,15 +89,15 @@
       "caption": "Clique aqui para corrigir",
       "click": "Clique para corrigir",
       "timeline": "Ajuste os tempos",
-      "undo": "Desfazer e refazer"
+      "split": "Divida e junte"
     },
     "download": {
       "title": "Baixe e pronto",
       "description": "Leve só o arquivo de legenda ou o vídeo já legendado, no estilo que preferir.",
       "vtt": "VTT (YouTube)",
-      "burn": "Vídeo com legenda na imagem",
-      "soft": "Vídeo com legenda que liga e desliga"
-    }
+      "burn": "Vídeo com legenda na imagem"
+    },
+    "sample": "reuniao-equipe"
   },
   "transcribe": {
     "language": "Idioma falado no vídeo",
@@ -222,7 +222,8 @@
         "body": "O vídeo em geração será descartado se você sair desta tela.",
         "stay": "Ficar aqui",
         "go": "Sair e cancelar"
-      }
+      },
+      "suffix": "legendado"
     }
   },
   "done": {

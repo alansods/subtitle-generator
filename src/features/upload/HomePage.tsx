@@ -21,6 +21,8 @@ function StepNumber({ n }: { n: number }) {
 
 export function HomePage() {
   const { t } = useTranslation();
+  // Nome de exemplo no idioma da interface.
+  const sample = t('how.sample');
   const scrollToUpload = () => {
     document.querySelector('[data-testid="dropzone"]')?.scrollIntoView({ behavior: 'smooth' });
     document.querySelector<HTMLButtonElement>('[data-testid="dropzone"] button')?.focus();
@@ -32,7 +34,7 @@ export function HomePage() {
       visual: (
         <div className="flex items-center gap-2.5 rounded-lg border bg-card px-3 py-2.5 shadow-sm">
           <Video aria-hidden="true" className="size-5 text-muted-foreground" />
-          <span className="font-mono text-xs font-medium">reuniao-equipe.mp4</span>
+          <span className="font-mono text-xs font-medium">{sample}.mp4</span>
         </div>
       ),
       chips: ['MP4', 'WebM', 'MOV', t('how.choose.limit')],
@@ -65,13 +67,13 @@ export function HomePage() {
           />
         </div>
       ),
-      chips: [t('how.review.click'), t('how.review.timeline'), t('how.review.undo')],
+      chips: [t('how.review.click'), t('how.review.timeline'), t('how.review.split')],
     },
     {
       id: 'download',
       visual: (
         <ul className="flex w-full flex-col gap-2 px-3.5">
-          {['reuniao-equipe.srt', 'reuniao-equipe.vtt', 'reuniao-equipe-legendado.mp4'].map(
+          {[`${sample}.srt`, `${sample}.vtt`, `${sample}-${t('export.video.suffix')}.mp4`].map(
             (name) => (
               <li
                 key={name}
@@ -84,7 +86,7 @@ export function HomePage() {
           )}
         </ul>
       ),
-      chips: ['SRT', t('how.download.vtt'), t('how.download.burn'), t('how.download.soft')],
+      chips: ['SRT', t('how.download.vtt'), t('how.download.burn')],
     },
   ] as const;
 

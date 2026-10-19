@@ -85,7 +85,7 @@ export function VideoExportPanel({ blocked, onRunningChange }: VideoExportPanelP
   const video = useSession((s) => s.video);
   const { state, start, cancel, isRunning } = useVideoExport();
   const running = state.status === 'running';
-  const fileName = `${video?.name ?? 'video'}-legendado.mp4`;
+  const fileName = `${video?.name ?? 'video'}-${t('export.video.suffix')}.mp4`;
 
   // Sair durante a geração: confirma e cancela.
   const blocker = useBlocker({

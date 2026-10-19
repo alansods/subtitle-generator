@@ -2,10 +2,11 @@ import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { i18n } from '@/i18n';
 import type { BurnInInput, ExportProgress, VideoExporter } from '@/lib/media/videoExport';
 import { useSession } from '@/lib/session/store';
 import { renderRoute } from '@/test/renderRoute';
-import { seedSession } from '@/test/session';
+import { fakeCues, fakeVideo, seedSession } from '@/test/session';
 
 import { remainingSeconds } from './useVideoExport';
 
@@ -93,6 +94,21 @@ describe('Requirement: Opção de vídeo com legenda', () => {
     expect(screen.getByRole('button', { name: 'Gerar vídeo' })).toBeEnabled();
     // A opção de só legenda continua disponível.
     expect(screen.getByRole('radio', { name: /Somente legenda/ })).toBeInTheDocument();
+  });
+});
+
+describe('Requirement: Opção de vídeo com legenda', () => {
+  it('Scenario: Nome em inglês', async () => {
+    seedSession({ cues: true });
+    useSession.getState().setVideo(fakeVideo({ name: 'meeting', fileName: 'meeting.mp4' }));
+    useSession.getState().setCues(fakeCues());
+    await act(async () => {
+      await i18n.changeLanguage('en');
+    });
+    renderRoute('/export');
+    await screen.findByRole('heading', { name: 'Download' });
+    await userEvent.click(screen.getByRole('radio', { name: /Video with subtitles/ }));
+    expect(screen.getByTestId('video-file-name')).toHaveTextContent('meeting-subtitled.mp4');
   });
 });
 

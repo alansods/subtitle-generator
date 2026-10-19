@@ -1,7 +1,8 @@
-import { fireEvent, screen, waitFor, within } from '@testing-library/react';
+import { act, fireEvent, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { i18n } from '@/i18n';
 import { useSession } from '@/lib/session/store';
 import { renderRoute } from '@/test/renderRoute';
 
@@ -42,6 +43,30 @@ describe('Requirement: Página inicial explica o uso', () => {
       'Revise assistindo',
       'Baixe e pronto',
     ]);
+  });
+
+  it('Scenario: Só opções que existem', async () => {
+    renderRoute('/');
+    const how = await screen.findByRole('region', { name: 'Como fazer sua legenda' });
+    expect(how).not.toHaveTextContent(/Desfazer e refazer/);
+    expect(how).not.toHaveTextContent(/liga e desliga/);
+  });
+
+  it('Scenario: Exemplos no idioma da interface', async () => {
+    await act(async () => {
+      await i18n.changeLanguage('en');
+    });
+    renderRoute('/');
+    const how = await screen.findByRole('region', { name: 'How to make your subtitles' });
+    for (const name of [
+      'team-meeting.mp4',
+      'team-meeting.srt',
+      'team-meeting.vtt',
+      'team-meeting-subtitled.mp4',
+    ]) {
+      expect(within(how).getByText(name)).toBeInTheDocument();
+    }
+    expect(how).not.toHaveTextContent(/reuniao/);
   });
 });
 
