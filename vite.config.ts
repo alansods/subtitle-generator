@@ -6,6 +6,7 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 
 import { crossOriginHeaders } from './config/cross-origin-headers.ts';
+import { dropOrtWasm } from './config/drop-ort-wasm.ts';
 
 export default defineConfig({
   plugins: [
@@ -20,9 +21,10 @@ export default defineConfig({
     }),
     react(),
     tailwindcss(),
+    dropOrtWasm(),
   ],
   // Worker em módulo (o worker de transcrição importa dependências ESM).
-  worker: { format: 'es' },
+  worker: { format: 'es', plugins: () => [dropOrtWasm()] },
   // O ffmpeg.wasm cria o próprio worker; o pré-empacotamento do Vite quebra esse caminho.
   // As dependências do worker entram já na subida do dev server; descobri-las depois faz o
   // Vite recarregar a página, e a sessão (só em memória) se perde no meio da transcrição.

@@ -93,7 +93,15 @@ The current behavior of the app is described in `openspec/specs/`. Specs are wri
 
 ## Hosting
 
-The build is a static site, so any static host works as long as it can send the COOP/COEP headers. `public/_headers` sets them for Cloudflare Pages. `config/cross-origin-headers.ts` sets the same headers for the dev server and the preview.
+Live at **https://subtitle-generator-cdi.pages.dev**, on Cloudflare Pages (free plan). The build is a static site with no server code:
+
+- `public/_headers` sets COOP/COEP for every path. `config/cross-origin-headers.ts` sets the same headers for the dev server and the preview.
+- `wrangler.jsonc` points Pages at `dist/`. Without a `404.html`, Pages serves `index.html` for app routes such as `/edit`.
+- Large runtimes are not part of the build. The ffmpeg core and the ONNX Runtime `.wasm` used by Whisper load from jsDelivr at pinned versions, and the Whisper models load from Hugging Face. Cloudflare limits each file to 25 MiB.
+
+Deploy with `npm run deploy`, which builds and runs `wrangler pages deploy`. It needs a one-time `npx wrangler login`.
+
+Cloudflare now suggests Workers with static assets for new projects. This app stays on Pages because Hugging Face rejects model downloads from pages served on `*.workers.dev`.
 
 ## License
 

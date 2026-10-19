@@ -59,8 +59,10 @@ context: |
   - wavesurfer.js + plugin Regions para timeline.
   - Testes: Vitest, React Testing Library, Playwright.
   - ESLint + Prettier; `tsc --noEmit` no CI.
-  - Hospedagem estática no Cloudflare Pages (plano Free), com COOP same-origin e
-    COEP credentialless (também no dev server do Vite). Sem backend.
+  - Hospedagem estática no Cloudflare Pages (plano Free), projeto subtitle-generator
+    (https://subtitle-generator-cdi.pages.dev), com COOP same-origin e COEP credentialless
+    (também no dev server do Vite). Sem backend. Não usar *.workers.dev: o Hugging Face
+    recusa baixar os modelos para páginas servidas de lá.
   - Modelos Whisper vindos do Hugging Face e ffmpeg core de CDN público com versão fixa
     (o .wasm passa do limite de 25 MiB por arquivo do Pages). As duas origens ficam em
     constantes de configuração para permitir espelhar no Cloudflare R2.

@@ -11,6 +11,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
+    "deploy": "npm run build && npx -y wrangler@4.151.2 pages deploy --branch main",
     "typecheck": "tsc -b",
     "lint": "eslint .",
     "format": "prettier --write .",

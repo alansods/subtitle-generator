@@ -1,0 +1,9 @@
+// Publicação no Cloudflare Pages (plano Free). Sem código de servidor: só o build de
+// dist/. O dist/_headers aplica COOP/COEP; sem 404.html, rotas da aplicação (/edit,
+// /export…) devolvem o index.html. Pages, e não Workers: o Hugging Face recusa baixar os
+// modelos para páginas servidas de *.workers.dev.
+{
+  "name": "subtitle-generator",
+  "pages_build_output_dir": "./dist",
+  "compatibility_date": "2026-10-01",
+}
