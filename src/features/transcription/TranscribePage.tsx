@@ -69,174 +69,176 @@ export function TranscribePage() {
   const stageIndex = running ? STAGES.indexOf(state.stage) : -1;
 
   return (
-    <div className="flex flex-wrap items-start gap-7">
-      <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-3">
-        <h1 className="text-[26px] font-semibold">{t('pages.transcribe.title')}</h1>
-        {video && (
-          // A legenda deste vídeo ainda não existe: é o que esta tela vai gerar.
-          // eslint-disable-next-line jsx-a11y/media-has-caption
-          <video
-            src={video.url}
-            controls
-            className="aspect-video w-full rounded-3xl bg-[#14171b]"
-            aria-label={video.fileName}
-          />
-        )}
-        <p className="text-[13px] text-muted-foreground">{t('footer.privacy')}</p>
-      </div>
-
-      <section className="flex min-w-0 flex-[1_1_400px] flex-col gap-5 rounded-3xl bg-card p-6">
-        {!running ? (
-          <>
-            {device === 'wasm' && (
-              <div
-                role="status"
-                className="rounded-xl border border-warning bg-warning-soft px-3.5 py-3 text-sm text-warning"
-              >
-                {t('transcribe.slowBrowser')}
-              </div>
-            )}
-            <fieldset className="flex flex-col gap-2" aria-labelledby={legendId}>
-              <legend id={legendId} className="mb-2 text-[15px] font-semibold">
-                {t('transcribe.language')}
-              </legend>
-              <div className="flex flex-wrap gap-1.5">
-                {LANGUAGES.map((option) => (
-                  <label
-                    key={option}
-                    className={cn(
-                      'inline-flex min-h-11 cursor-pointer items-center rounded-full px-4 text-sm font-semibold has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring',
-                      language === option
-                        ? 'bg-ink text-ink-foreground'
-                        : 'bg-secondary text-foreground',
-                    )}
-                  >
-                    <input
-                      type="radio"
-                      name="spoken-language"
-                      value={option}
-                      checked={language === option}
-                      onChange={() => {
-                        setLanguage(option);
-                      }}
-                      className="sr-only"
-                    />
-                    {t(`transcribe.languages.${option}`)}
-                  </label>
-                ))}
-              </div>
-            </fieldset>
-            <p className="text-sm leading-relaxed text-muted-foreground">
-              {t('transcribe.explain')}
-            </p>
-
-            {state.status === 'error' && (
-              <div
-                role="alert"
-                className="flex items-start gap-2.5 rounded-xl border border-destructive bg-danger-soft px-3.5 py-3 text-sm text-destructive"
-              >
-                <AlertCircle aria-hidden="true" className="mt-0.5 size-[18px] shrink-0" />
-                {state.reason === 'no-speech' ? t('transcribe.noSpeech') : t('transcribe.failed')}
-              </div>
-            )}
-
-            <Button className="min-h-12 text-base" onClick={() => void start(language)}>
-              {state.status === 'error' ? t('transcribe.retry') : t('transcribe.generate')}
-            </Button>
-            <button
-              type="button"
-              onClick={() => importRef.current?.click()}
-              className="self-center rounded px-1.5 py-1.5 text-sm text-accent-foreground underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
-            >
-              {t('transcribe.import')}
-            </button>
-            <input
-              ref={importRef}
-              type="file"
-              accept=".srt,.vtt"
-              className="sr-only"
-              tabIndex={-1}
-              aria-label={t('transcribe.import')}
-              data-testid="subtitle-input"
-              onChange={(event) => {
-                const file = event.target.files?.[0];
-                event.target.value = '';
-                if (file) void importFile(file);
-              }}
+    <div className="flex flex-col gap-4">
+      <h1 className="text-[26px] font-semibold">{t('pages.transcribe.title')}</h1>
+      <div className="flex flex-wrap items-start gap-7">
+        <div className="flex min-w-0 flex-[999_1_560px] flex-col gap-3">
+          {video && (
+            // A legenda deste vídeo ainda não existe: é o que esta tela vai gerar.
+            // eslint-disable-next-line jsx-a11y/media-has-caption
+            <video
+              src={video.url}
+              controls
+              className="aspect-video w-full rounded-3xl bg-[#14171b]"
+              aria-label={video.fileName}
             />
-            {importError && (
-              <div
-                role="alert"
-                className="rounded-xl border border-destructive bg-danger-soft px-3.5 py-3 text-sm text-destructive"
-              >
-                {t('transcribe.importError')}
-              </div>
-            )}
-          </>
-        ) : (
-          <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-1.5">
-              <h2 className="text-lg font-semibold">{t('transcribe.running')}</h2>
-              <p className="text-[13px] text-muted-foreground">{t('transcribe.runningHint')}</p>
-            </div>
-            <div
-              role="progressbar"
-              aria-label={t('transcribe.running')}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-valuenow={percent}
-              className="h-2.5 overflow-hidden rounded-full bg-secondary"
-            >
-              <div
-                className="h-full bg-primary transition-[width]"
-                style={{ width: `${String(percent)}%` }}
-              />
-            </div>
-            <ol className="flex flex-col gap-2.5">
-              {STAGES.map((stage, index) => {
-                const done = index < stageIndex;
-                const current = index === stageIndex;
-                return (
-                  <li
-                    key={stage}
-                    className="flex items-center gap-3 text-[15px]"
-                    data-testid={`stage-${stage}`}
-                  >
-                    <span
-                      aria-hidden="true"
+          )}
+          <p className="text-[13px] text-muted-foreground">{t('footer.privacy')}</p>
+        </div>
+
+        <section className="flex min-w-0 flex-[1_1_400px] flex-col gap-5 rounded-3xl bg-card p-6">
+          {!running ? (
+            <>
+              {device === 'wasm' && (
+                <div
+                  role="status"
+                  className="rounded-xl border border-warning bg-warning-soft px-3.5 py-3 text-sm text-warning"
+                >
+                  {t('transcribe.slowBrowser')}
+                </div>
+              )}
+              <fieldset className="flex flex-col gap-2" aria-labelledby={legendId}>
+                <legend id={legendId} className="mb-2 text-[15px] font-semibold">
+                  {t('transcribe.language')}
+                </legend>
+                <div className="flex flex-wrap gap-1.5">
+                  {LANGUAGES.map((option) => (
+                    <label
+                      key={option}
                       className={cn(
-                        'grid size-[22px] place-items-center rounded-full',
-                        done && 'bg-success text-card',
-                        current && 'border-[3px] border-primary',
-                        !done && !current && 'border-2 border-border',
+                        'inline-flex min-h-11 cursor-pointer items-center rounded-full px-4 text-sm font-semibold has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-ring',
+                        language === option
+                          ? 'bg-ink text-ink-foreground'
+                          : 'bg-secondary text-foreground',
                       )}
                     >
-                      {done && <Check className="size-3.5" strokeWidth={3} />}
-                    </span>
-                    <span
-                      className={cn(current ? 'font-semibold' : !done && 'text-muted-foreground')}
+                      <input
+                        type="radio"
+                        name="spoken-language"
+                        value={option}
+                        checked={language === option}
+                        onChange={() => {
+                          setLanguage(option);
+                        }}
+                        className="sr-only"
+                      />
+                      {t(`transcribe.languages.${option}`)}
+                    </label>
+                  ))}
+                </div>
+              </fieldset>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {t('transcribe.explain')}
+              </p>
+
+              {state.status === 'error' && (
+                <div
+                  role="alert"
+                  className="flex items-start gap-2.5 rounded-xl border border-destructive bg-danger-soft px-3.5 py-3 text-sm text-destructive"
+                >
+                  <AlertCircle aria-hidden="true" className="mt-0.5 size-[18px] shrink-0" />
+                  {state.reason === 'no-speech' ? t('transcribe.noSpeech') : t('transcribe.failed')}
+                </div>
+              )}
+
+              <Button className="min-h-12 text-base" onClick={() => void start(language)}>
+                {state.status === 'error' ? t('transcribe.retry') : t('transcribe.generate')}
+              </Button>
+              <button
+                type="button"
+                onClick={() => importRef.current?.click()}
+                className="self-center rounded px-1.5 py-1.5 text-sm text-accent-foreground underline focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+              >
+                {t('transcribe.import')}
+              </button>
+              <input
+                ref={importRef}
+                type="file"
+                accept=".srt,.vtt"
+                className="sr-only"
+                tabIndex={-1}
+                aria-label={t('transcribe.import')}
+                data-testid="subtitle-input"
+                onChange={(event) => {
+                  const file = event.target.files?.[0];
+                  event.target.value = '';
+                  if (file) void importFile(file);
+                }}
+              />
+              {importError && (
+                <div
+                  role="alert"
+                  className="rounded-xl border border-destructive bg-danger-soft px-3.5 py-3 text-sm text-destructive"
+                >
+                  {t('transcribe.importError')}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-1.5">
+                <h2 className="text-lg font-semibold">{t('transcribe.running')}</h2>
+                <p className="text-[13px] text-muted-foreground">{t('transcribe.runningHint')}</p>
+              </div>
+              <div
+                role="progressbar"
+                aria-label={t('transcribe.running')}
+                aria-valuemin={0}
+                aria-valuemax={100}
+                aria-valuenow={percent}
+                className="h-2.5 overflow-hidden rounded-full bg-secondary"
+              >
+                <div
+                  className="h-full bg-primary transition-[width]"
+                  style={{ width: `${String(percent)}%` }}
+                />
+              </div>
+              <ol className="flex flex-col gap-2.5">
+                {STAGES.map((stage, index) => {
+                  const done = index < stageIndex;
+                  const current = index === stageIndex;
+                  return (
+                    <li
+                      key={stage}
+                      className="flex items-center gap-3 text-[15px]"
+                      data-testid={`stage-${stage}`}
                     >
-                      {t(`transcribe.stages.${stage}`)}
-                      {done && <span className="sr-only"> ({t('transcribe.done')})</span>}
-                    </span>
-                    {current && state.stage !== 'extract' && state.stage !== 'segment' && (
-                      <span className="ml-auto font-mono text-[13px] text-muted-foreground">
-                        {Math.floor(state.ratio * 100)}%
+                      <span
+                        aria-hidden="true"
+                        className={cn(
+                          'grid size-[22px] place-items-center rounded-full',
+                          done && 'bg-success text-card',
+                          current && 'border-[3px] border-primary',
+                          !done && !current && 'border-2 border-border',
+                        )}
+                      >
+                        {done && <Check className="size-3.5" strokeWidth={3} />}
                       </span>
-                    )}
-                  </li>
-                );
-              })}
-            </ol>
-            <p aria-live="polite" className="sr-only">
-              {t(`transcribe.stages.${state.stage}`)} {Math.floor(state.ratio * 10) * 10}%
-            </p>
-            <Button variant="secondary" className="self-start" onClick={cancel}>
-              {t('transcribe.cancel')}
-            </Button>
-          </div>
-        )}
-      </section>
+                      <span
+                        className={cn(current ? 'font-semibold' : !done && 'text-muted-foreground')}
+                      >
+                        {t(`transcribe.stages.${stage}`)}
+                        {done && <span className="sr-only"> ({t('transcribe.done')})</span>}
+                      </span>
+                      {current && state.stage !== 'extract' && state.stage !== 'segment' && (
+                        <span className="ml-auto font-mono text-[13px] text-muted-foreground">
+                          {Math.floor(state.ratio * 100)}%
+                        </span>
+                      )}
+                    </li>
+                  );
+                })}
+              </ol>
+              <p aria-live="polite" className="sr-only">
+                {t(`transcribe.stages.${state.stage}`)} {Math.floor(state.ratio * 10) * 10}%
+              </p>
+              <Button variant="secondary" className="self-start" onClick={cancel}>
+                {t('transcribe.cancel')}
+              </Button>
+            </div>
+          )}
+        </section>
+      </div>
 
       <AlertDialog
         open={blocker.status === 'blocked'}
