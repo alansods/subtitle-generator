@@ -1,56 +1,100 @@
-# Gerador de Legenda
+# Subtitle Generator
 
-Aplicação web gratuita que gera legendas para vídeos direto no navegador: o usuário escolhe o vídeo, a legenda é transcrita localmente com Whisper, ele revisa assistindo e baixa a legenda (SRT/VTT) ou o vídeo legendado. Não há backend, conta nem histórico: o vídeo nunca sai do computador e nada fica salvo.
+Free web app that creates subtitles for a video right in the browser. Pick a video, it is transcribed on your own computer with Whisper, you review the subtitles while watching, and you download an SRT/VTT file or the whole video with the subtitles burned in.
 
-## Requisitos
+There is no backend, no account and no history. The video never leaves your computer and nothing is stored.
 
-- Node 24 (veja `.nvmrc`; mínimo 22.12). Use o npm 11 que vem com o Node 24: o npm 10.9 tem um bug ao resolver peer dependencies opcionais (`Cannot read properties of null (reading 'edgesOut')`) ao instalar pacotes novos.
-- Chrome ou Edge atuais para desenvolver (WebGPU e `crossOriginIsolated`).
+![Subtitle Generator home page](docs/screenshots/01-home.png)
 
-## Testar localmente
+## How it works
+
+### 1. Generate subtitles
+
+Choose the language spoken in the video and click **Generate subtitles**. You can also import an existing `.srt` or `.vtt` file.
+
+![Generate subtitles step](docs/screenshots/02-generate.png)
+
+Transcription runs locally in a Web Worker. You can cancel at any time.
+
+![Transcription in progress](docs/screenshots/03-generating.png)
+
+### 2. Review
+
+The subtitles play over the video. Fix text on the video or in the list, adjust timing in 0.1 s steps, split, merge, insert or delete subtitles, and pick the subtitle style. The subtitle that matches the current time is marked **Now playing**.
+
+![Review step with the subtitle list](docs/screenshots/04-review.png)
+
+### 3. Download
+
+Download only the subtitles, as SRT or VTT:
+
+![Download subtitles only](docs/screenshots/05-download-subtitles.png)
+
+Or create the whole video with the subtitles burned into the picture, in the style shown in the preview:
+
+![Download the video with subtitles](docs/screenshots/06-download-video.png)
+
+### Done
+
+Download the same file again, go back to edit this video, or start over with another one.
+
+![Done screen](docs/screenshots/07-done.png)
+
+## Under the hood
+
+- **Transcription:** [Transformers.js](https://github.com/huggingface/transformers.js) runs Whisper in the browser. With WebGPU it uses `whisper-small`; without WebGPU it falls back to `whisper-base` on WebAssembly, which is slower. The model is downloaded once (a few hundred MB) and then cached by the browser.
+- **Video:** [ffmpeg.wasm](https://github.com/ffmpegwasm/ffmpeg.wasm) extracts the audio and burns the subtitles into an H.264/AAC MP4. When the page is cross-origin isolated it uses the multi-threaded core.
+- **Cross-origin isolation:** the app is served with `Cross-Origin-Opener-Policy: same-origin` and `Cross-Origin-Embedder-Policy: credentialless`. Multi-threaded ffmpeg needs both headers.
+- **Stack:** Vite, React 19, TypeScript (strict), TanStack Router, Tailwind CSS v4, shadcn/ui, Zustand, i18next (Portuguese and English), Zod.
+
+## Requirements
+
+- Node 24 (see `.nvmrc`; 22.12 at minimum). Use the npm 11 that ships with Node 24. npm 10.9 fails when installing new packages with optional peer dependencies (`Cannot read properties of null (reading 'edgesOut')`).
+- A recent Chrome or Edge for development (WebGPU and `crossOriginIsolated`).
+
+## Run locally
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Abra `http://localhost:5173` no Chrome ou no Edge. Na primeira transcrição, o navegador baixa o modelo Whisper (algumas centenas de MB, uma vez só; depois fica no cache). Com WebGPU o app usa o `whisper-small`; sem WebGPU, o `whisper-base`, mais lento.
+Open `http://localhost:5173` in Chrome or Edge.
 
-Para rodar o teste opcional com o modelo real: `RUN_REAL_MODEL=1 npx playwright test`.
+## Scripts
 
-## Comandos
+| Command                           | What it does                                                     |
+| --------------------------------- | ---------------------------------------------------------------- |
+| `npm run dev`                     | Dev server at `http://localhost:5173`, with COOP/COEP            |
+| `npm run build`                   | Typecheck and static build in `dist/` (includes `_headers`)      |
+| `npm run preview`                 | Serves the build at `http://localhost:4173`, with COOP/COEP      |
+| `npm run check`                   | Typecheck, lint, formatting and unit tests                       |
+| `npm test`                        | Unit and component tests (Vitest and Testing Library)            |
+| `npm run test:tooling`            | Tooling tests (tsc, ESLint, Prettier, build, CI)                 |
+| `npm run test:e2e`                | End-to-end tests (Playwright) against the dev server and a build |
+| `npm run lint` / `npm run format` | ESLint / Prettier                                                |
 
-| Comando                           | O que faz                                                                       |
-| --------------------------------- | ------------------------------------------------------------------------------- |
-| `npm run dev`                     | Servidor de desenvolvimento em `http://localhost:5173`, com COOP/COEP           |
-| `npm run build`                   | Typecheck + build estático em `dist/` (inclui `_headers`)                       |
-| `npm run preview`                 | Serve o build em `http://localhost:4173`, com COOP/COEP                         |
-| `npm run check`                   | Typecheck, lint, formatação e testes unitários (falha se qualquer etapa falhar) |
-| `npm test`                        | Testes unitários e de componentes (Vitest + Testing Library)                    |
-| `npm run test:tooling`            | Testes da infraestrutura (tsc, eslint, prettier, build, CI)                     |
-| `npm run test:e2e`                | Testes end-to-end (Playwright) contra o dev server e o preview                  |
-| `npm run lint` / `npm run format` | ESLint / Prettier                                                               |
+Install the e2e browser once with `npx playwright install chromium`. The e2e tests use a fake transcriber and a fake video exporter. Two optional suites use the real ones:
 
-Na primeira vez, instale o navegador dos testes e2e com `npx playwright install chromium`.
+- `RUN_REAL_MODEL=1 npx playwright test` runs real Whisper (downloads the model).
+- `RUN_REAL_FFMPEG=1 npx playwright test` runs real ffmpeg.wasm and checks that the subtitles are drawn in the exported video.
 
-## Fluxo de desenvolvimento (OpenSpec)
+## Development workflow
 
-O projeto segue Spec-Driven Development com [OpenSpec](https://github.com/Fission-AI/OpenSpec). Nenhum código é escrito sem uma mudança aprovada.
+The project follows spec-driven development with [OpenSpec](https://github.com/Fission-AI/OpenSpec). No code is written without an approved change.
 
-1. `/opsx:explore` (opcional) para entender o problema.
-2. `/opsx:propose <nome>` cria `openspec/changes/<nome>/` com proposta, design, tasks e deltas de spec.
-3. `openspec validate <nome> --strict` até passar.
-4. Aprovação humana da proposta.
-5. `/opsx:apply` implementa as tasks; todo cenário da spec tem um teste que cita o nome do cenário.
-6. `/opsx:verify` confere se o código bate com a spec.
-7. `/opsx:archive` move a mudança para `openspec/changes/archive/` e atualiza `openspec/specs/`.
+1. `openspec new change <name>` creates `openspec/changes/<name>/` with a proposal, design, tasks and spec deltas.
+2. `openspec validate <name> --strict` must pass.
+3. The proposal is approved by a person.
+4. The tasks are implemented. Every spec scenario has a test that cites the scenario name.
+5. `openspec archive <name>` moves the change to `openspec/changes/archive/` and updates `openspec/specs/`.
 
-O contexto do projeto (stack, princípios, decisões de produto e a ordem das mudanças) fica em `openspec/config.yaml`.
+The current behavior of the app is described in `openspec/specs/`. Specs are written in Portuguese, with normative keywords (SHALL, MUST) in English. The project context (stack, principles, product decisions) is in `openspec/config.yaml`.
 
-## Hospedagem
+## Hosting
 
-Site estático no Cloudflare Pages (plano gratuito). `public/_headers` aplica `Cross-Origin-Opener-Policy: same-origin` e `Cross-Origin-Embedder-Policy: credentialless`, os mesmos headers que `config/cross-origin-headers.ts` aplica no dev e no preview.
+The build is a static site, so any static host works as long as it can send the COOP/COEP headers. `public/_headers` sets them for Cloudflare Pages. `config/cross-origin-headers.ts` sets the same headers for the dev server and the preview.
 
-## Licença
+## License
 
-Código proprietário: todos os direitos reservados. O repositório é público só para consulta; copiar, modificar, distribuir ou usar o código exige autorização por escrito. Veja [LICENSE](LICENSE). Componentes de terceiros (fonte Inter, dependências npm) seguem as próprias licenças.
+Proprietary. All rights reserved. This repository is public for reference only: copying, modifying, distributing or using the code requires written permission. See [LICENSE](LICENSE). Third-party components (the Inter font and the npm dependencies) keep their own licenses.
